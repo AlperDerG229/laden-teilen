@@ -169,7 +169,7 @@ The chain is the message bus and the database.
 
 ## Deployment details (for judges)
 
-| | |
+| Item | Value |
 |---|---|
 | Cluster | Solana **devnet** (public RPC `https://api.devnet.solana.com`) |
 | Token | Circle EURC, devnet mint [`HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr`](https://explorer.solana.com/address/HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr?cluster=devnet) (SPL Token, 6 decimals; [Circle's address list](https://developers.circle.com/stablecoins/eurc-contract-addresses)) |
@@ -242,6 +242,9 @@ manager, or through a go-e charger. The QR code is printed in the terminal.
 - **Safety.** The bridge is software only. It never touches wiring, contactors or the meter; it switches the charge
   mode through evcc's or go-e's API, exactly like the owner would in their app. Installing or modifying a wallbox is
   work for a qualified electrician.
+
+Excerpt of the smoke run against the live evcc demo. It uses the in-memory chain, so transactions are labelled
+`mock:`; with `--chain devnet` they are explorer links.
 
 ```text
 $ npm run bridge:smoke
