@@ -705,6 +705,7 @@
 .demo {
   min-height: calc(100vh - var(--mock-h) - var(--caption-h));
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
 }
 .demo__bar {
@@ -733,13 +734,37 @@
 }
 .demo__stage {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   align-items: start;
-  padding: 14px 20px;
+  padding: 14px clamp(12px, 2vw, 20px);
 }
 @media (min-width: 1000px) {
   .demo__stage {
     grid-template-columns: minmax(0, 1fr) 372px;
+  }
+}
+/* Wide and tall enough: the split screen fills exactly one screen (for the 720p recording). */
+@media (min-width: 1000px) and (min-height: 540px) {
+  .demo {
+    height: calc(100vh - var(--mock-h) - var(--caption-h));
+    min-height: 0;
+  }
+  .demo__stage {
+    min-height: 0;
+    align-items: stretch;
+  }
+  .demo__kiosk {
+    min-height: 0;
+  }
+  .demo__phone {
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .demo .phone {
+    height: 100%;
+    max-height: 780px;
+    min-height: 0;
   }
 }
 .demo__phone {

@@ -49,7 +49,18 @@ function PaymentRows({ rows }: { rows: KioskPayment[] }) {
   );
 }
 
-export function KioskPanel({ wallbox, compact = false, onGuestUrl }: { wallbox: WallboxParams; compact?: boolean; onGuestUrl?: (url: string | null) => void }) {
+export function KioskPanel({
+  wallbox,
+  compact = false,
+  onGuestUrl,
+  speed,
+}: {
+  wallbox: WallboxParams;
+  compact?: boolean;
+  onGuestUrl?: (url: string | null) => void;
+  /** Demo speed from the route (kWh per hour); overrides the load-time ?speed= flag. */
+  speed?: number;
+}) {
   const env = useAppEnv();
   const kiosk = getKiosk(env);
   const snap = useStore(kiosk);
@@ -65,6 +76,10 @@ export function KioskPanel({ wallbox, compact = false, onGuestUrl }: { wallbox: 
     });
     kiosk.start();
   }, [kiosk, wallbox.owner, wallbox.priceEur, wallbox.priceMicroPerKWh, wallbox.name, wallbox.capEur]);
+
+  useEffect(() => {
+    if (speed !== undefined) kiosk.sim.setSpeed(speed);
+  }, [kiosk, speed]);
 
   const cfg = snap.config ?? wallbox;
   const guestUrl = useMemo(
@@ -108,9 +123,7 @@ export function KioskPanel({ wallbox, compact = false, onGuestUrl }: { wallbox: 
             <div className="qr-plate">
               <QrCode value={guestUrl} label="QR code: open the charging page for this session" testId="kiosk-qr" className="qr-plate__qr" />
               <div className="qr-plate__title">Scan to charge</div>
-              <p className="qr-plate__sub">
-                Pay {step !== null ? eur(step) : '—'} EURC per 0.1 kWh from your wallet. One approval, stop anytime.
-              </p>
+              <p className="qr-plate__sub">Pay {step !== null ? eur(step) : '—'} EURC per 0.1 kWh from your wallet. One approval, stop anytime.</p>
               <div className="qr-plate__phantom">
                 <QrCode value={phantomUrl} level="L" label="QR code: open this page inside the Phantom app" className="qr-plate__qr-small" />
                 <p>
@@ -165,55 +178,65 @@ export function KioskPanel({ wallbox, compact = false, onGuestUrl }: { wallbox: 
           )}
         </div>
 
-        <div className="kiosk__meters">
-          <div className="meter">
-            <span className="meter__label">Energy delivered</span>
-            <Register digits={reg.digits} lastTurn={reg.lastTurn} unit="kWh" text={reg.text} value={reg.value} size={compact ? 'lg' : 'xl'} testId="kiosk-kwh" />
+        <div className="kiosk__right">
+          <div className="kiosk__meters">
+            <div className="meter">
+              <span className="meter__label">Energy delivered</span>
+              <Register
+                digits={reg.digits}
+                lastTurn={reg.lastTurn}
+                unit="kWh"
+                text={reg.text}
+                value={reg.value}
+                size={compact ? 'lg' : 'xl'}
+                testId="kiosk-kwh"
+              />
+            </div>
+            <div className="meter">
+              <span className="meter__label">Paid by the guest</span>
+              <Register fraction="plain" digits={paid.digits} unit="EURC" text={paid.text} value={paid.value} size={compact ? 'md' : 'lg'} testId="kiosk-eur" />
+            </div>
+            <dl className="kiosk__facts">
+              <div>
+                <dt>Power</dt>
+                <dd>{powerNow.toFixed(1)} kW</dd>
+              </div>
+              <div>
+                <dt>Step</dt>
+                <dd>
+                  {STEP_WH / 1000} kWh = {step !== null ? eur(step) : '—'} EURC
+                </dd>
+              </div>
+              <div>
+                <dt>Payments</dt>
+                <dd>{snap.payments.length}</dd>
+              </div>
+            </dl>
           </div>
-          <div className="meter">
-            <span className="meter__label">Paid by the guest</span>
-            <Register fraction="plain" digits={paid.digits} unit="EURC" text={paid.text} value={paid.value} size={compact ? 'md' : 'lg'} testId="kiosk-eur" />
-          </div>
-          <dl className="kiosk__facts">
-            <div>
-              <dt>Power</dt>
-              <dd>{powerNow.toFixed(1)} kW</dd>
-            </div>
-            <div>
-              <dt>Step</dt>
-              <dd>
-                {STEP_WH / 1000} kWh = {step !== null ? eur(step) : '—'} EURC
-              </dd>
-            </div>
-            <div>
-              <dt>Payments</dt>
-              <dd>{snap.payments.length}</dd>
-            </div>
-          </dl>
-        </div>
-      </div>
 
-      <div className="kiosk__feed">
-        <div className="kiosk__feed-head">
-          <h2>{snap.payments.length > 0 || !snap.last ? 'Payments' : 'Last session'}</h2>
-          {snap.payments.length === 0 && snap.last && (
-            <p className="kiosk__last" data-testid="kiosk-last">
-              {kwh(snap.last.whDelivered)} kWh · {eur(snap.last.totalMicro)} EURC · {END_REASON_TEXT[snap.last.reason]}
-              {snap.last.refundLamports !== null && <> · refunded {sol(snap.last.refundLamports)} SOL</>} <TxLink sig={snap.last.endSig}>end tx</TxLink>
-            </p>
-          )}
+          <div className="kiosk__feed">
+            <div className="kiosk__feed-head">
+              <h2>{snap.payments.length > 0 || !snap.last ? 'Payments' : 'Last session'}</h2>
+              {snap.payments.length === 0 && snap.last && (
+                <p className="kiosk__last" data-testid="kiosk-last">
+                  {kwh(snap.last.whDelivered)} kWh · {eur(snap.last.totalMicro)} EURC · {END_REASON_TEXT[snap.last.reason]}
+                  {snap.last.refundLamports !== null && <> · refunded {sol(snap.last.refundLamports)} SOL</>} <TxLink sig={snap.last.endSig}>end tx</TxLink>
+                </p>
+              )}
+            </div>
+            {feedRows.length > 0 ? (
+              <PaymentRows rows={feedRows} />
+            ) : (
+              <p className="kiosk__empty">One payment per 0.1 kWh appears here, each confirmed on Solana before the energy flows.</p>
+            )}
+            {(snap.notice || snap.error) && (
+              <p className={`kiosk__notice${snap.error ? ' kiosk__notice--error' : ''}`} role="alert">
+                {snap.error ?? snap.notice}
+              </p>
+            )}
+            {snap.pendingConfig && <p className="kiosk__notice">New settings apply after this session.</p>}
+          </div>
         </div>
-        {feedRows.length > 0 ? (
-          <PaymentRows rows={feedRows} />
-        ) : (
-          <p className="kiosk__empty">One payment per 0.1 kWh appears here, each confirmed on Solana before the energy flows.</p>
-        )}
-        {(snap.notice || snap.error) && (
-          <p className={`kiosk__notice${snap.error ? ' kiosk__notice--error' : ''}`} role="alert">
-            {snap.error ?? snap.notice}
-          </p>
-        )}
-        {snap.pendingConfig && <p className="kiosk__notice">New settings apply after this session.</p>}
       </div>
 
       <div className="kiosk__sim" aria-label="Charger simulator">
@@ -245,7 +268,13 @@ export function KioskPanel({ wallbox, compact = false, onGuestUrl }: { wallbox: 
           </select>
         </label>
         <div className="kiosk__sim-actions">
-          <button type="button" className="btn btn--ghost btn--sm btn--on-housing" onClick={() => kiosk.sim.setFull()} disabled={!charging} data-testid="sim-full">
+          <button
+            type="button"
+            className="btn btn--ghost btn--sm btn--on-housing"
+            onClick={() => kiosk.sim.setFull()}
+            disabled={!charging}
+            data-testid="sim-full"
+          >
             Car full
           </button>
           <button type="button" className="btn btn--stop btn--sm" onClick={() => kiosk.stopSession()} disabled={!charging} data-testid="kiosk-stop">

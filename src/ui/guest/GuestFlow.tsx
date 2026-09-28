@@ -61,7 +61,19 @@ function capKwh(capEur: string, priceMicro: bigint): string {
   return (Number(tenths) / 10).toFixed(1);
 }
 
-function GuestScreens({ controller, params, embedded, onScanNew, onEngaged }: { controller: GuestController; params: GuestParams; embedded: boolean; onScanNew?: () => void; onEngaged?: () => void }) {
+function GuestScreens({
+  controller,
+  params,
+  embedded,
+  onScanNew,
+  onEngaged,
+}: {
+  controller: GuestController;
+  params: GuestParams;
+  embedded: boolean;
+  onScanNew?: () => void;
+  onEngaged?: () => void;
+}) {
   const env = useAppEnv();
   const mode = env.chain.kind;
   const snap = useStore(controller);
@@ -148,7 +160,8 @@ function GuestScreens({ controller, params, embedded, onScanNew, onEngaged }: { 
               {snap.busyBy && (
                 <>
                   {' '}
-                  (Started by <AddressLink address={snap.busyBy} />.)
+                  (Started by <AddressLink address={snap.busyBy} />
+                  .)
                 </>
               )}
             </span>
@@ -168,7 +181,13 @@ function GuestScreens({ controller, params, embedded, onScanNew, onEngaged }: { 
           <section className="guest__section">
             <label className="field">
               <span className="field__label">Spending cap</span>
-              <select className="select" value={snap.capEur} onChange={(e) => controller.setCap(e.target.value)} data-testid="cap-select" disabled={snap.phase === 'starting'}>
+              <select
+                className="select"
+                value={snap.capEur}
+                onChange={(e) => controller.setCap(e.target.value)}
+                data-testid="cap-select"
+                disabled={snap.phase === 'starting'}
+              >
                 {CAP_CHOICES_EUR.map((c) => (
                   <option key={c} value={c}>
                     {c} EURC (up to {capKwh(c, params.priceMicroPerKWh)} kWh)
@@ -189,7 +208,13 @@ function GuestScreens({ controller, params, embedded, onScanNew, onEngaged }: { 
                 {mode === 'devnet' ? (
                   <StandardWallets selected={wallet} onSelect={setWallet} />
                 ) : (
-                  <button type="button" className="btn btn--ghost btn--block" disabled data-testid="guest-connect" title="Wallet apps are disabled in MOCK mode">
+                  <button
+                    type="button"
+                    className="btn btn--ghost btn--block"
+                    disabled
+                    data-testid="guest-connect"
+                    title="Wallet apps are disabled in MOCK mode"
+                  >
                     Connect wallet (off in MOCK mode)
                   </button>
                 )}
@@ -201,9 +226,8 @@ function GuestScreens({ controller, params, embedded, onScanNew, onEngaged }: { 
             {snap.replacesDelegate && (
               <div className="notice notice--warn" data-testid="delegate-warning">
                 <span>
-                  Your EURC account already lets <AddressLink address={snap.replacesDelegate} /> spend{' '}
-                  {snap.balances ? eur(snap.balances.delegatedMicro) : '?'} EURC. A token account has one spending approval at a time, so starting here replaces
-                  it.
+                  Your EURC account already lets <AddressLink address={snap.replacesDelegate} /> spend {snap.balances ? eur(snap.balances.delegatedMicro) : '?'}{' '}
+                  EURC. A token account has one spending approval at a time, so starting here replaces it.
                 </span>
               </div>
             )}
@@ -236,7 +260,13 @@ function GuestScreens({ controller, params, embedded, onScanNew, onEngaged }: { 
                 </p>
               )}
               {!wallet && mode === 'devnet' && <StandardWallets selected={wallet} onSelect={setWallet} />}
-              <button type="button" className="btn btn--stop btn--block" onClick={() => void controller.stopAndRevoke()} disabled={!wallet?.signer || snap.pending !== null} data-testid="stop-btn">
+              <button
+                type="button"
+                className="btn btn--stop btn--block"
+                onClick={() => void controller.stopAndRevoke()}
+                disabled={!wallet?.signer || snap.pending !== null}
+                data-testid="stop-btn"
+              >
                 {snap.pending === 'stop' ? (wallet?.kind === 'standard' ? `Approve in ${wallet.label}…` : 'Stopping…') : 'Stop & revoke'}
               </button>
               <p className="guest__fine">You can close this page. Charging also stops when your cap is used up or the car is full.</p>
@@ -273,9 +303,7 @@ function WallboxCard({ params }: { params: GuestParams }) {
       <p className="guest__price">
         <strong>{params.priceEur}</strong> EUR per kWh
       </p>
-      <p className="guest__step">
-        {eur((params.priceMicroPerKWh * BigInt(STEP_WH)) / 1000n)} EURC per 0.1 kWh, paid before it is delivered
-      </p>
+      <p className="guest__step">{eur((params.priceMicroPerKWh * BigInt(STEP_WH)) / 1000n)} EURC per 0.1 kWh, paid before it is delivered</p>
       <p className="guest__owner">
         Payout to <AddressLink address={params.owner} />
       </p>
@@ -305,7 +333,13 @@ function WalletCard({ wallet, snap, onFunds, onSwitch }: { wallet: GuestWallet; 
           Get test funds
         </button>
       </div>
-      {wallet.kind === 'demo' && <p className="wallet-card__badge">Demo wallet (devnet): Phantom/Solflare work the same way.</p>}
+      {wallet.kind === 'demo' && (
+        <p className="wallet-card__badge">
+          {wallet.label.includes('mock')
+            ? 'Demo wallet (mock): on devnet, Phantom/Solflare work the same way.'
+            : 'Demo wallet (devnet): Phantom/Solflare work the same way.'}
+        </p>
+      )}
     </div>
   );
 }
@@ -504,9 +538,7 @@ function StandardWallets({ selected, onSelect }: { selected: GuestWallet | null;
       ) : null}
       <Modal open={open} onClose={() => setOpen(false)} title="Connect a wallet">
         {wallets.length === 0 ? (
-          <p>
-            No Solana wallet was found in this browser. Install Phantom, Solflare or Backpack, open this page in the Phantom app, or use the demo wallet.
-          </p>
+          <p>No Solana wallet was found in this browser. Install Phantom, Solflare or Backpack, open this page in the Phantom app, or use the demo wallet.</p>
         ) : (
           <div className="wallet-list">
             {wallets.map((w) => (
@@ -527,8 +559,8 @@ function StandardWallets({ selected, onSelect }: { selected: GuestWallet | null;
           </div>
         )}
         <p className="muted">
-          Set the wallet to Solana <strong>devnet</strong> (Phantom: Settings → Developer Settings → Testnet Mode) so its preview matches. The wallet only signs;
-          this page sends the transaction to devnet.
+          Set the wallet to Solana <strong>devnet</strong> (Phantom: Settings → Developer Settings → Testnet Mode) so its preview matches. The wallet only
+          signs; this page sends the transaction to devnet.
         </p>
       </Modal>
     </>

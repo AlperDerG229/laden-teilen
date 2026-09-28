@@ -23,7 +23,7 @@ export default defineConfig([
     extends: [reactHooks.configs.flat.recommended, reactRefresh.configs.vite()],
   },
   {
-    files: ['scripts/**/*.ts', '*.config.{ts,js}'],
+    files: ['scripts/**/*.ts', 'e2e/**/*.ts', '*.config.{ts,js}'],
     languageOptions: { globals: { ...globals.node } },
   },
 ])

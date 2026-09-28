@@ -28,7 +28,7 @@ export function SiteHeader({ current }: { current?: string }) {
     <header className="site-header">
       <Wordmark />
       <nav className="site-nav" aria-label="Main">
-        {link('/how', 'How it works')}
+        {link('/how', 'How it works', 'hide-xs')}
         {link('/owner', 'For owners', 'hide-sm')}
         {link('/demo', 'Demo')}
         <span className="net-tag" title={chain.kind === 'mock' ? 'Simulated chain' : 'Solana devnet'}>

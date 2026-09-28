@@ -21,7 +21,7 @@
 .kiosk {
   container: kiosk / inline-size;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
   background: var(--housing);
   color: var(--on-housing);
   border-radius: var(--radius-lg);
@@ -129,7 +129,7 @@
 }
 .qr-plate__phantom {
   display: grid;
-  grid-template-columns: 124px minmax(0, 1fr);
+  grid-template-columns: 112px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
   width: 100%;
@@ -141,8 +141,8 @@
   line-height: 1.4;
 }
 .qr-plate__qr-small {
-  width: 124px;
-  height: 124px;
+  width: 112px;
+  height: 112px;
 }
 .qr-plate a {
   color: var(--blue);
@@ -206,14 +206,20 @@
   font-size: 1.05rem;
 }
 
+.kiosk__right {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  min-width: 0;
+}
 .kiosk__meters {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   align-content: start;
   min-width: 0;
 }
 .kiosk .register--xl {
-  font-size: clamp(54px, 10.5cqi, 104px);
+  font-size: clamp(54px, 8cqi, 88px);
 }
 .kiosk .register--lg {
   font-size: clamp(40px, 7cqi, 66px);
@@ -252,10 +258,10 @@
   line-height: 1.1;
 }
 
-/* Payment feed */
+/* Payment feed (right column, under the meters) */
 .kiosk__feed {
-  padding: 0 22px 16px;
-  min-height: 0;
+  container: feed / inline-size;
+  min-width: 0;
 }
 .kiosk__feed-head {
   display: flex;
@@ -293,6 +299,7 @@
   margin: 8px 0 0;
   padding: 0;
   display: grid;
+  align-content: start;
   gap: 3px;
   max-height: 188px;
   overflow-y: auto;
@@ -332,7 +339,7 @@
     transform: translateY(-6px);
   }
 }
-@container kiosk (max-width: 520px) {
+@container feed (max-width: 480px) {
   .feed__row {
     grid-template-columns: 2.8em minmax(0, 1fr) auto;
     grid-template-areas: 'seq amount link' 'seq kwh time';
@@ -495,8 +502,8 @@
 .kiosk--compact .kiosk__meters {
   gap: 12px;
 }
-.kiosk--compact .kiosk__feed {
-  padding: 0 18px 10px;
+.kiosk--compact .kiosk__right {
+  gap: 10px;
 }
 .kiosk--compact .kiosk__feed-head {
   padding-top: 10px;
@@ -521,6 +528,96 @@
   padding: 14px;
   background: #22282b;
 }
+/* Fill mode: on a landscape tablet or desktop the display fills exactly one screen and the
+   payment feed scrolls inside the space left under the meters (wallbox page and demo). */
+@media (min-width: 760px) and (min-height: 600px) {
+  .wallbox-page {
+    height: calc(100vh - var(--mock-h) - var(--caption-h));
+    min-height: 0;
+  }
+}
+@media (min-width: 760px) and (min-height: 600px) {
+  .wallbox-page .kiosk {
+    min-height: 0;
+  }
+}
+@media (min-width: 1000px) and (min-height: 540px) {
+  .demo .kiosk {
+    height: 100%;
+    min-height: 0;
+  }
+}
+@media (min-width: 760px) and (min-height: 600px) {
+  .wallbox-page .kiosk__main {
+    min-height: 0;
+    align-items: stretch;
+  }
+  .wallbox-page .kiosk__plate-slot {
+    align-self: start;
+  }
+  .wallbox-page .kiosk__right {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .wallbox-page .kiosk__feed {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .wallbox-page .feed {
+    flex: 1 1 auto;
+    min-height: 44px;
+    max-height: none;
+  }
+}
+@media (min-width: 1000px) and (min-height: 540px) {
+  .demo .kiosk__main {
+    min-height: 0;
+    align-items: stretch;
+  }
+  .demo .kiosk__plate-slot {
+    align-self: start;
+  }
+  .demo .kiosk__right {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .demo .kiosk__feed {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .demo .feed {
+    flex: 1 1 auto;
+    min-height: 40px;
+    max-height: none;
+  }
+}
+/* Large screens: scale the display up. */
+@container kiosk (min-width: 1400px) {
+  .kiosk__main {
+    grid-template-columns: minmax(360px, 420px) minmax(0, 1fr);
+    gap: 56px;
+    padding: 32px 40px;
+  }
+  .kiosk .register--xl {
+    font-size: 124px;
+  }
+  .kiosk .register--lg {
+    font-size: 84px;
+  }
+}
+@media (min-height: 881px) {
+  @container kiosk (min-width: 1400px) {
+    .qr-plate__qr {
+      max-width: 360px;
+    }
+  }
+}
 .wallbox-page__foot {
   text-align: center;
   font-size: var(--fs-xs);
@@ -531,11 +628,25 @@
 }
 @container kiosk (min-width: 1000px) {
   .kiosk__main {
-    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
     gap: 36px;
-    padding: 30px;
+    padding: 24px 28px;
   }
   .qr-plate__qr {
-    max-width: 330px;
+    max-width: 290px;
+  }
+}
+/* Landscape tablets: keep the whole display on one screen. */
+@media (max-height: 880px) {
+  .kiosk:not(.kiosk--compact) .qr-plate__qr {
+    max-width: min(290px, calc(100vh - 560px));
+    min-width: 200px;
+  }
+  .kiosk:not(.kiosk--compact) .qr-plate__phantom {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+  .kiosk:not(.kiosk--compact) .qr-plate__qr-small {
+    width: 96px;
+    height: 96px;
   }
 }

@@ -449,6 +449,7 @@ body.has-captions {
 .site-nav a {
   color: var(--ink);
   text-decoration: none;
+  white-space: nowrap;
 }
 .site-nav a:hover,
 .site-nav a[aria-current='page'] {
@@ -470,6 +471,11 @@ body.has-captions {
 }
 @media (max-width: 720px) {
   .site-nav .hide-sm {
+    display: none;
+  }
+}
+@media (max-width: 440px) {
+  .site-nav .hide-xs {
     display: none;
   }
 }

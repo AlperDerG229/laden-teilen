@@ -6,9 +6,13 @@ import { shortAddr } from '../format.ts';
 import { GuestFlow } from '../guest/GuestFlow.tsx';
 import { KioskPanel } from '../kiosk/KioskPanel.tsx';
 import { parseGuestUrl, readGuestParams, readWallboxParams, wallboxQuery } from '../links.ts';
+import { parseSpeed } from '../../sim/charger-sim.ts';
 import { href } from '../router.ts';
 import { readJson } from '../storage.ts';
 import { OWNER_SETTINGS_KEY, type OwnerSettings } from './OwnerSetup.tsx';
+
+/** `speed` in the hash query (e.g. #/demo?speed=60), if any. */
+const routeSpeed = (params: URLSearchParams): number | undefined => (params.has('speed') ? parseSpeed(params.get('speed')) : undefined);
 
 export function Wallbox({ params }: { params: URLSearchParams }) {
   const env = useAppEnv();
@@ -38,7 +42,7 @@ export function Wallbox({ params }: { params: URLSearchParams }) {
   }
   return (
     <main className="wallbox-page">
-      <KioskPanel wallbox={wallbox} />
+      <KioskPanel wallbox={wallbox} speed={routeSpeed(params)} />
       <p className="wallbox-page__foot">
         Devnet prototype with a simulated charger. No real energy is sold and the tokens have no value. ·{' '}
         <a href={href('/owner/dashboard', { o: wallbox.owner })}>Dashboard</a> · <a href={href('/owner', wallboxQuery(wallbox))}>Settings</a>
@@ -136,7 +140,7 @@ export function Demo({ params }: { params: URLSearchParams }) {
       </header>
       <div className="demo__stage">
         <div className="demo__kiosk">
-          <KioskPanel wallbox={wallbox} compact onGuestUrl={setQrUrl} />
+          <KioskPanel wallbox={wallbox} compact onGuestUrl={setQrUrl} speed={routeSpeed(params)} />
         </div>
         <div className="demo__phone">
           <PhoneFrame url={scanned}>

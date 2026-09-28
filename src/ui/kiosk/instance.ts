@@ -14,6 +14,9 @@ export function getKiosk(env: AppEnv): KioskController {
       storage: env.storage,
       mode: env.chain.kind,
       locks: typeof navigator !== 'undefined' && navigator.locks ? navigator.locks : undefined,
+      // A MOCK pull interrupted by a reload was never broadcast, so it cannot land later. On devnet
+      // it might, until its blockhash expires (about a minute).
+      pendingPayWaitMs: env.chain.kind === 'mock' ? 2_000 : 75_000,
     });
   }
   return instance;

@@ -20,11 +20,13 @@ const TITLES: Record<string, string> = {
 
 export default function App({ env }: { env: AppEnv }) {
   const { path, params } = useRoute();
+  // Flags are read at load; a later hash-only navigation (no reload) may still turn captions on.
+  const captions = env.flags.captions || params.get('captions') === '1';
 
   useEffect(() => {
     document.body.classList.toggle('has-mock', env.flags.mock);
-    document.body.classList.toggle('has-captions', env.flags.captions);
-  }, [env.flags.mock, env.flags.captions]);
+    document.body.classList.toggle('has-captions', captions);
+  }, [env.flags.mock, captions]);
 
   useEffect(() => {
     document.title = `${env.flags.mock ? '[MOCK] ' : ''}${TITLES[path] ?? 'Laden teilen'}`;
@@ -62,7 +64,7 @@ export default function App({ env }: { env: AppEnv }) {
     <AppEnvContext.Provider value={env}>
       {env.flags.mock && env.flags.mockSource && <MockBanner source={env.flags.mockSource} />}
       {page}
-      <CaptionBar enabled={env.flags.captions} />
+      <CaptionBar enabled={captions} />
     </AppEnvContext.Provider>
   );
 }

@@ -22,3 +22,7 @@ npm-debug.log*
 .idea
 .DS_Store
 *.sw?
+
+# Playwright output
+test-results/
+playwright-report/
