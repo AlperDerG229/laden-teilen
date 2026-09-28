@@ -74,7 +74,7 @@ import {
   explorerAddress,
   explorerTx,
 } from '../src/core/config.ts';
-import { errorMessage } from '../src/core/errors.ts';
+import { ChainError, errorMessage } from '../src/core/errors.ts';
 import { decodeMemo, sidOf } from '../src/core/memo.ts';
 import { ChargerSession, type ChargerPort } from '../src/core/session.ts';
 import { sleep } from '../src/core/throttle.ts';
@@ -305,6 +305,25 @@ async function kitSmoke(client: ChainClient): Promise<void> {
         `simulated: ${sim.err ? `runtime error ${json(sim.err)} (expected: unfunded keys)` : 'ok'}`,
     );
   }
+
+  // getFeeForMessage from compiled message bytes (used to sweep the session key to exactly 0).
+  const endFee = await client.estimateFee(s, buildEndIxs({ session: s, guest: g.address, lamports: 1n, sid, whTotal: 0, totalMicro: 0n, reason: 'user' }));
+  const reclaimFee = await client.estimateFee(g, [
+    getTransferCheckedInstruction({ source: oAta, mint: client.token.mint, destination: gAta, authority: o, amount: 1n, decimals: client.token.decimals }),
+    getCloseAccountInstruction({ account: oAta, destination: g.address, owner: o }),
+  ]);
+  if (endFee !== 5_000n || reclaimFee !== 10_000n) throw new Error(`Unexpected fee estimates: end ${endFee}, 2-signer ${reclaimFee}`);
+  out(`  fee estimate via getFeeForMessage: end tx ${endFee} lamports (1 signer), reclaim tx ${reclaimFee} lamports (2 signers) ✓`);
+
+  // sendTransaction path: an unfunded payer must fail fast at preflight as a non-retryable program error.
+  const sendError = await client.sendIxs(g, buildStopIxs({ guest: g, guestAta: gAta, sid })).then(
+    () => null,
+    (e: unknown) => e,
+  );
+  if (!(sendError instanceof ChainError) || sendError.kind !== 'program') {
+    throw new Error(`Expected a preflight ChainError('program'), got ${errorMessage(sendError)}`);
+  }
+  out(`  sendIxs with an unfunded payer: ChainError(program) at preflight ✓ (${sendError.message.slice(0, 60)})`);
 
   // Semantic check against the real programs: a funded EURC holder as the (unsigned) guest.
   const holder = await findFundedHolder(client);
