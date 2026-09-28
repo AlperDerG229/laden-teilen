@@ -1,0 +1,24 @@
+# Secrets: never commit keys (treasury, demo guest, e2e key backups)
+.env*
+
+# Dependencies and build output
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.tsbuildinfo
+
+# Demo video raw recordings (large)
+video/raw/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.sw?
