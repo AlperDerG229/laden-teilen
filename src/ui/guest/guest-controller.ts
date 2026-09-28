@@ -60,7 +60,7 @@ export interface GuestSnapshot {
   balances: GuestBalances | null;
   capEur: string;
   /** Problems that block "Start charging" (empty when ready). */
-  blockers: ('no-wallet' | 'no-sol' | 'no-token-account' | 'no-token' | 'no-signer')[];
+  blockers: ('no-wallet' | 'no-sol' | 'no-token-account' | 'no-token' | 'no-signer' | 'owner-wallet')[];
   /** The guest token account already has another delegate that the start tx would replace. */
   replacesDelegate: Address | null;
   busyBy: Address | null;
@@ -235,6 +235,8 @@ export class GuestController {
         delegatedMicro: acc.delegatedMicro,
       };
       const blockers: GuestSnapshot['blockers'] = [];
+      // Paying yourself would be an SPL self-transfer, which never uses up the allowance.
+      if (w.address === this.deps.params.owner) blockers.push('owner-wallet');
       if (!w.signer) blockers.push('no-signer');
       if (lamports < MIN_GUEST_LAMPORTS) blockers.push('no-sol');
       if (!acc.exists) blockers.push('no-token-account');
@@ -256,7 +258,12 @@ export class GuestController {
     try {
       const balances = await this.refreshBalances();
       if (!balances || this.snap.blockers.length > 0) {
-        this.patch({ pending: null, error: 'Add test funds first (SOL for the fee deposit and EURC for at least one step).' });
+        this.patch({
+          pending: null,
+          error: this.snap.blockers.includes('owner-wallet')
+            ? "This is the wallbox's payout wallet. Charge with another wallet."
+            : 'Add test funds first (SOL for the fee deposit and EURC for at least one step).',
+        });
         return;
       }
       const { session, priceMicroPerKWh } = this.deps.params;

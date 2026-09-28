@@ -104,6 +104,7 @@ function GuestScreens({
   }, [controller, wallet]);
 
   const demoLabel = mode === 'mock' ? 'Demo wallet (mock)' : 'Demo wallet (devnet)';
+  const returningStandard = controller.recordedWallet?.kind === 'standard';
   const chooseDemo = async () => {
     const signer = await loadDemoWallet(env.storage, mode);
     setWallet({ kind: 'demo', address: signer.address, signer, label: demoLabel });
@@ -205,7 +206,7 @@ function GuestScreens({
               <WalletCard wallet={wallet} snap={snap} onFunds={() => setFundsOpen(true)} onSwitch={() => setWallet(null)} />
             ) : (
               <div className="guest__wallets">
-                <StandardWallets selected={wallet} onSelect={setWallet} />
+                <StandardWallets selected={wallet} onSelect={setWallet} autoSelect={returningStandard} />
                 <button type="button" className="btn btn--ghost btn--block" onClick={chooseDemo} data-testid="demo-wallet">
                   Use demo wallet ({mode === 'mock' ? 'mock' : 'devnet'})
                 </button>
@@ -247,7 +248,7 @@ function GuestScreens({
                   <span>Connect the wallet that started this session to stop it. You can also just leave: the wallbox stops when your cap is used up.</span>
                 </p>
               )}
-              {!wallet && <StandardWallets selected={wallet} onSelect={setWallet} />}
+              {!wallet && <StandardWallets selected={wallet} onSelect={setWallet} autoSelect={returningStandard} />}
               <button
                 type="button"
                 className="btn btn--stop btn--block"
@@ -336,6 +337,7 @@ function StartButton({ snap, wallet, onStart, onFunds }: { snap: GuestSnapshot; 
   let hint: ReactNode = 'One approval in your wallet: the spending cap plus the refundable fee deposit.';
   if (!wallet) hint = 'Choose a wallet first.';
   else if (!snap.balances) hint = 'Reading balances…';
+  else if (snap.blockers.includes('owner-wallet')) hint = "This is the wallbox's payout wallet. Charge with another wallet or the demo wallet.";
   else if (snap.blockers.includes('no-signer')) hint = 'This wallet cannot sign here. Use another wallet or the demo wallet.';
   else if (snap.blockers.length > 0)
     hint = (
@@ -490,7 +492,16 @@ function Receipt({ snap, params, wallet, onRevoke }: { snap: GuestSnapshot; para
 }
 
 /** Wallet-standard wallets. Only mounted in devnet mode. */
-function StandardWallets({ selected, onSelect }: { selected: GuestWallet | null; onSelect: (w: GuestWallet | null) => void }) {
+function StandardWallets({
+  selected,
+  onSelect,
+  autoSelect,
+}: {
+  selected: GuestWallet | null;
+  onSelect: (w: GuestWallet | null) => void;
+  /** Take over a silently reconnected wallet (a returning guest who used it for this session). */
+  autoSelect: boolean;
+}) {
   const env = useAppEnv();
   const client = getWalletClient();
   const wallets = useWallets(client);
@@ -501,12 +512,12 @@ function StandardWallets({ selected, onSelect }: { selected: GuestWallet | null;
 
   useEffect(() => {
     if (!connected?.signer) return;
-    // A silent auto-reconnect must not override a wallet the guest already picked.
-    if (selected && !userAsked.current) return;
+    // A silent auto-reconnect selects nothing by itself, except for a returning guest.
+    if (!userAsked.current && (selected || !autoSelect)) return;
     if (selected?.kind === 'standard' && selected.address === connected.account.address) return;
     onSelect({ kind: 'standard', address: connected.account.address as Address, signer: connected.signer, label: connected.wallet.name });
     userAsked.current = false;
-  }, [connected, selected, onSelect]);
+  }, [connected, selected, onSelect, autoSelect]);
 
   const here = typeof window !== 'undefined' ? window.location.href : env.baseUrl;
   return (

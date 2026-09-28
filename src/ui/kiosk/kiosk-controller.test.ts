@@ -149,6 +149,22 @@ describe('KioskController', () => {
     k.dispose();
   });
 
+  it('ends at once and refunds when the guest wallet is the payout wallet (self-transfer)', async () => {
+    const { chain, storage } = await env();
+    const ownerSigner = await generateKeyPairSigner();
+    await chain.requestTestFunds(ownerSigner.address);
+    const ownerAta = await chain.findAta(ownerSigner.address);
+    const k = kiosk(chain, storage);
+    k.configure(config(ownerSigner.address));
+    k.start();
+    const session = (await until(k, (s) => s.session !== null, 'key')).session!.address;
+    await guestStarts(chain, ownerSigner, ownerAta, session);
+    const done = await until(k, (s) => s.last !== null, 'error end');
+    expect(done.last).toMatchObject({ reason: 'error', payments: 0 });
+    expect(await chain.getSolBalance(session)).toBe(0n);
+    k.dispose();
+  });
+
   it('refuses a start tx with another price and refunds the deposit', async () => {
     const { chain, guest, owner, guestAta, storage } = await env();
     const k = kiosk(chain, storage);

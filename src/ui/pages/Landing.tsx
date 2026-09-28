@@ -57,7 +57,7 @@ export function Landing() {
           </h1>
           <p className="hero__lead">
             Guests scan a QR code and approve one spending cap. Before each 0.1 kWh, the charger pulls 0.039 EURC from their wallet on Solana, then delivers the
-            energy. No app, no account, no invoice.
+            energy. No charging app, no account, no invoice.
           </p>
           <div className="hero__ctas">
             <a className="btn" href={href('/demo')} data-testid="cta-demo">

@@ -108,6 +108,21 @@ describe('GuestController', () => {
     kiosk.dispose();
   });
 
+  it("refuses to start with the wallbox's own payout wallet (a self-transfer never uses up the cap)", async () => {
+    const { chain, kiosk, params } = await world();
+    const ownerSigner = await generateKeyPairSigner();
+    const g = new GuestController({ chain, storage: memoryStorage(), mode: 'mock', params: { ...params, owner: ownerSigner.address }, pollIntervalMs: 5 });
+    await g.init();
+    await chain.requestTestFunds(ownerSigner.address);
+    await g.setWallet({ kind: 'demo', address: ownerSigner.address, signer: ownerSigner, label: 'Demo wallet' });
+    expect(g.getSnapshot().blockers).toEqual(['owner-wallet']);
+    await g.start();
+    expect(g.getSnapshot()).toMatchObject({ phase: 'ready', startSig: null });
+    expect(g.getSnapshot().error).toMatch(/payout wallet/);
+    g.dispose();
+    kiosk.dispose();
+  });
+
   it('turns wallet and RPC errors into plain sentences', () => {
     expect(friendlyError(new Error('User rejected the request.'))).toMatch(/declined/);
     expect(friendlyError(new Error('Simulation failed: insufficient funds for fee'))).toMatch(/SOL/);

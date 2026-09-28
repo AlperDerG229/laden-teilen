@@ -346,6 +346,11 @@ export class KioskController {
     session.on('guest', (guest) => {
       this.saveRecord({ guest });
       this.patch({ guest, notice: null });
+      // Owner paying owner is an SPL self-transfer: it never uses up the allowance. End and refund.
+      if (guest.guest === config.owner) {
+        this.patch({ notice: 'The guest wallet is the payout wallet. Ending the session and refunding the deposit.' });
+        session.stop('error');
+      }
     });
     session.on('payment', (p) => {
       this.saveRecord({ payments: p.seq, totalMicro: p.totalMicro, payPending: null });
