@@ -34,13 +34,14 @@ describe('MOCK chain', () => {
     const info = await chain.findStartTx(session.address);
     expect(info).toMatchObject({ sig: startSig, guest: guest.address, guestAta, capMicro: 5_000_000n, priceMicroPerKWh: PRICE, sid, depositLamports: 5_000_000n });
 
-    let kiosk: ChargerSession;
+    const ref: { kiosk?: ChargerSession } = {};
     const charger = {
       async deliver() {
-        if (kiosk.progress.payments === 3) await chain.sendIxs(guest, buildStopIxs({ guest, guestAta, sid }));
+        if (ref.kiosk?.progress.payments === 3) await chain.sendIxs(guest, buildStopIxs({ guest, guestAta, sid }));
       },
     };
-    kiosk = new ChargerSession({ session, owner: owner.address, priceMicroPerKWh: PRICE, chain: chain.charger(), charger, sleep: noSleep });
+    const kiosk = new ChargerSession({ session, owner: owner.address, priceMicroPerKWh: PRICE, chain: chain.charger(), charger, sleep: noSleep });
+    ref.kiosk = kiosk;
     const result = await kiosk.start();
 
     expect(result).toMatchObject({ reason: 'revoked', payments: 3, whDelivered: 300, totalMicro: 3n * STEP });

@@ -188,9 +188,9 @@ export class KioskController {
     this.current?.stop('user');
   }
 
-  /** "Car full" / unplug from the simulator. */
+  /** "Car full" / unplug from the simulator. Only a charging session is affected. */
   carFull(): void {
-    this.current?.stop('full');
+    if (this.current?.state === 'CHARGING') this.current.stop('full');
   }
 
   /** Stops the loop. The current session ends normally (with refund). */

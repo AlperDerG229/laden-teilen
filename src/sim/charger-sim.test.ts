@@ -56,27 +56,33 @@ describe('ChargerSim', () => {
     expect(sim.getSnapshot().sessionWh).toBe(300);
   });
 
-  it('reports "car full" once per session and on unplug', () => {
-    const sim = new ChargerSim();
+  it('reports "car full" on the button and on unplug during a session, not before energy flowed', async () => {
+    const c = clock();
+    const sim = new ChargerSim({ speed: 36_000, now: c.now, sleep: c.sleep });
     let full = 0;
     sim.onFull = () => full++;
-    sim.setFull();
-    sim.setFull();
+    sim.setPlugged(false); // waiting for a guest: just unplugged, no session to end
+    expect(full).toBe(0);
+    sim.setPlugged(true);
+    expect(sim.getSnapshot().full).toBe(false);
+    await sim.deliver(100);
+    sim.setPlugged(false); // mid-session: counts as full
     expect(full).toBe(1);
-    sim.resetSession();
-    sim.setPlugged(false);
+    sim.setFull(); // every press notifies; the kiosk ignores it unless charging
     expect(full).toBe(2);
     expect(sim.getSnapshot()).toMatchObject({ plugged: false, full: true });
+    // A paid step never hangs on a missing plug once the session is ending.
+    await sim.deliver(100);
+    expect(sim.getSnapshot().sessionWh).toBe(200);
   });
 
   it('waits for the car to be plugged in before delivering a paid step', async () => {
     const c = clock();
     const sim = new ChargerSim({ plugged: false, speed: 600, now: c.now, sleep: c.sleep });
-    let waited = false;
     const p = sim.deliver(100);
     // The first wait happens synchronously up to the first sleep; plug in afterwards.
     await Promise.resolve();
-    waited = sim.getSnapshot().waitingForPlug;
+    const waited = sim.getSnapshot().waitingForPlug;
     sim.setPlugged(true);
     await p;
     expect(waited).toBe(true);

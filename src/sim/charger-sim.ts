@@ -51,7 +51,7 @@ export function parseSpeed(raw: string | null | undefined, fallback = DEFAULT_SP
 }
 
 export class ChargerSim implements ChargerPort {
-  /** Called once per session when the car reports full or is unplugged. */
+  /** Called when the car reports full or is unplugged during a session. */
   onFull?: () => void;
 
   private snap: ChargerSimSnapshot;
@@ -60,7 +60,6 @@ export class ChargerSim implements ChargerPort {
   private readonly sleep: Sleep;
   private readonly tickMs: number;
   private lastStepEnd: number | null = null;
-  private fullNotified = false;
 
   constructor(opts: ChargerSimOptions = {}) {
     this.now = opts.now ?? Date.now;
@@ -87,13 +86,14 @@ export class ChargerSim implements ChargerPort {
   /** Starts a new session meter (optionally at `initialWh` when a session resumes). */
   resetSession(initialWh = 0): void {
     this.lastStepEnd = null;
-    this.fullNotified = false;
     this.update({ sessionWh: initialWh, full: false, delivering: false, waitingForPlug: false });
   }
 
+  /** Unplugging during a session counts as "car full"; before any energy flowed it just waits. */
   setPlugged(plugged: boolean): void {
-    this.update({ plugged });
-    if (!plugged) this.markFull();
+    const inSession = this.snap.delivering || this.snap.sessionWh > 0;
+    this.update(plugged && !inSession ? { plugged, full: false } : { plugged });
+    if (!plugged && inSession) this.markFull();
   }
 
   setPowerKw(powerKw: number): void {
@@ -110,7 +110,9 @@ export class ChargerSim implements ChargerPort {
   }
 
   async deliver(wh: number): Promise<void> {
-    while (!this.snap.plugged) {
+    // A paid step waits for the plug, unless the session is ending anyway ("full"/unplugged):
+    // then the step is booked as delivered so the session can end instead of hanging.
+    while (!this.snap.plugged && !this.snap.full) {
       this.update({ waitingForPlug: true });
       await this.sleep(200);
     }
@@ -130,10 +132,9 @@ export class ChargerSim implements ChargerPort {
     this.update({ sessionWh: startWh + wh, delivering: false });
   }
 
+  /** Notifies on every press; the kiosk ignores it unless a session is charging (stop is idempotent). */
   private markFull(): void {
     this.update({ full: true });
-    if (this.fullNotified) return;
-    this.fullNotified = true;
     try {
       this.onFull?.();
     } catch {

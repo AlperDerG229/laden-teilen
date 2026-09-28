@@ -1,0 +1,357 @@
+/* Laden teilen: design tokens and base styles.
+   Palette from the German electrical-installation world (RAL):
+   7035 light grey = the meter cabinet, 7016 anthracite = wallbox housing, 9005 = meter register,
+   3020 traffic red = fractional drums / stop, 6024 traffic green = charging, 5017 traffic blue = links. */
+
+@font-face {
+  font-family: 'D-DIN';
+  src: url('../assets/fonts/d-din/D-DIN.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'D-DIN';
+  src: url('../assets/fonts/d-din/D-DIN-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'D-DIN Condensed';
+  src: url('../assets/fonts/d-din/D-DINCondensed.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'D-DIN Condensed';
+  src: url('../assets/fonts/d-din/D-DINCondensed-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --cabinet: #d3d6d2; /* RAL 7035 Lichtgrau */
+  --cabinet-deep: #c3c7c2;
+  --plate: #f3f4f1; /* type-plate label */
+  --plate-line: #b5bab4;
+  --housing: #373f43; /* RAL 7016 Anthrazitgrau */
+  --housing-2: #2c3336;
+  --housing-3: #454e53;
+  --housing-line: #56606a;
+  --register: #0e0e10; /* RAL 9005 Tiefschwarz */
+  --ink: #1f2426;
+  --ink-2: #4a5357;
+  --on-housing: #eef0ec;
+  --on-housing-2: #b4bcc0;
+  --red: #c1121c; /* RAL 3020 Verkehrsrot */
+  --red-ink: #9f0f17;
+  --green: #2f8a4a; /* RAL 6024 Verkehrsgrün */
+  --green-ink: #1c6333;
+  --green-led: #45c46a;
+  --blue: #0e518d; /* RAL 5017 Verkehrsblau */
+  --blue-led: #4aa3ff;
+  --yellow: #f6a800; /* RAL 1003 Signalgelb: MOCK banner only */
+
+  --font-din: 'D-DIN', 'DIN Alternate', Bahnschrift, 'Arial Narrow', system-ui, sans-serif;
+  --font-din-cond: 'D-DIN Condensed', 'D-DIN', Bahnschrift, 'Arial Narrow', sans-serif;
+  --font-body: 'Source Sans 3 Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Atkinson Hyperlegible Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.3125rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem;
+  --fs-hero: clamp(2.6rem, 5.4vw, 4.6rem);
+
+  --radius: 4px;
+  --radius-lg: 10px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --maxw: 1180px;
+  --focus: 0 0 0 3px var(--plate), 0 0 0 6px var(--blue);
+  --mock-h: 0px;
+  --caption-h: 0px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--cabinet);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
+body.has-mock {
+  --mock-h: 40px;
+}
+body.has-captions {
+  --caption-h: 76px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-din);
+  font-weight: 700;
+  line-height: 1.08;
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+code,
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Eyebrow labels: the stamped lettering of a type plate. */
+.eyebrow {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Buttons
+   --------------------------------------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--housing);
+  --btn-fg: #fff;
+  --btn-bd: var(--housing);
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0.55em 1.2em;
+  border: 2px solid var(--btn-bd);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1.1;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 80ms ease;
+}
+.btn:hover {
+  --btn-bg: var(--housing-2);
+  --btn-bd: var(--housing-2);
+  text-decoration: none;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-bd: var(--housing);
+}
+.btn--ghost:hover {
+  --btn-bg: rgba(55, 63, 67, 0.08);
+  --btn-bd: var(--housing);
+}
+.btn--go {
+  --btn-bg: var(--green-ink);
+  --btn-bd: var(--green-ink);
+}
+.btn--go:hover {
+  --btn-bg: #145127;
+  --btn-bd: #145127;
+}
+.btn--stop {
+  --btn-bg: var(--red);
+  --btn-bd: var(--red);
+}
+.btn--stop:hover {
+  --btn-bg: var(--red-ink);
+  --btn-bd: var(--red-ink);
+}
+.btn--block {
+  width: 100%;
+}
+.btn--sm {
+  min-height: 36px;
+  padding: 0.35em 0.8em;
+  font-size: 0.8125rem;
+}
+.btn__icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+}
+
+.linkbtn {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--blue);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Forms
+   --------------------------------------------------------------------------------------------- */
+.field {
+  display: grid;
+  gap: 6px;
+}
+.field__label {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.04em;
+}
+.field__hint {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.field__error {
+  font-size: var(--fs-sm);
+  color: var(--red-ink);
+  font-weight: 600;
+}
+.input,
+.select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.55em 0.75em;
+  border: 2px solid var(--housing-3);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+.input--mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+.input:focus-visible,
+.select:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+.input[aria-invalid='true'] {
+  border-color: var(--red);
+}
+.select {
+  appearance: none;
+  padding-right: 2.4em;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 55%,
+    calc(100% - 14px) 55%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+.input-affix {
+  position: relative;
+}
+.input-affix .input {
+  padding-right: 4.5em;
+}
+.input-affix__unit {
+  position: absolute;
+  right: 0.9em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-din);
+  font-weight: 700;
+  color: var(--ink-2);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

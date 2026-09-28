@@ -1,0 +1,541 @@
+/* Wallbox display: the anthracite housing. Container queries let the same panel run full-screen
+   on a tablet and in the left half of the split-screen demo. */
+.on-housing .meter__label,
+.on-housing .eyebrow {
+  color: var(--on-housing-2);
+}
+.meter {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+.meter__label {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.kiosk {
+  container: kiosk / inline-size;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  background: var(--housing);
+  color: var(--on-housing);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 22px 50px rgba(24, 30, 33, 0.3);
+}
+.kiosk a {
+  color: #9fd0ff;
+}
+
+.kiosk__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--housing-line);
+}
+.kiosk__title {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.kiosk__brand {
+  display: block;
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-housing-2);
+}
+.kiosk__name {
+  font-size: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kiosk__price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--housing-line);
+  border-radius: var(--radius);
+}
+.kiosk__price-value {
+  font-family: var(--font-din-cond);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1;
+}
+.kiosk__price-unit {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--on-housing-2);
+}
+
+.kiosk__main {
+  display: grid;
+  gap: 22px;
+  padding: 22px;
+}
+@container kiosk (min-width: 700px) {
+  .kiosk__main {
+    grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* QR type plate */
+.qr-plate {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: var(--plate);
+  color: var(--ink);
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.12);
+}
+.qr-plate__qr {
+  width: 100%;
+  max-width: 290px;
+  height: auto;
+  aspect-ratio: 1;
+}
+.qr-plate__title {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.qr-plate__sub {
+  max-width: 32ch;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.qr-plate__phantom {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1.5px dashed var(--plate-line);
+  text-align: left;
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+}
+.qr-plate__qr-small {
+  width: 124px;
+  height: 124px;
+}
+.qr-plate a {
+  color: var(--blue);
+}
+.qr-plate__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+.qr-plate--empty {
+  min-height: 240px;
+  align-content: center;
+}
+
+.inuse-plate {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1.5px solid var(--housing-line);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.14);
+}
+.inuse-plate__note {
+  font-size: var(--fs-sm);
+  color: var(--on-housing-2);
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin: 0;
+}
+.facts div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.facts .txlink {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+.facts dt {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-housing-2);
+}
+.facts dd {
+  margin: 0;
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.kiosk__meters {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  min-width: 0;
+}
+.kiosk .register--xl {
+  font-size: clamp(54px, 10.5cqi, 104px);
+}
+.kiosk .register--lg {
+  font-size: clamp(40px, 7cqi, 66px);
+}
+.kiosk--compact .register--lg {
+  font-size: clamp(42px, 7.2cqi, 62px);
+}
+.kiosk--compact .register--md {
+  font-size: clamp(28px, 4.6cqi, 40px);
+}
+.kiosk--compact .kiosk__facts dd {
+  font-size: 21px;
+}
+.kiosk__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 0;
+}
+.kiosk__facts div {
+  display: grid;
+}
+.kiosk__facts dt {
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--on-housing-2);
+}
+.kiosk__facts dd {
+  margin: 0;
+  font-family: var(--font-din-cond);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+/* Payment feed */
+.kiosk__feed {
+  padding: 0 22px 16px;
+  min-height: 0;
+}
+.kiosk__feed-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--housing-line);
+}
+.kiosk__feed-head h2 {
+  font-size: var(--fs-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.kiosk__last {
+  font-size: var(--fs-sm);
+  color: var(--on-housing-2);
+}
+.kiosk__empty {
+  margin-top: 8px;
+  font-size: var(--fs-sm);
+  color: var(--on-housing-2);
+}
+.kiosk__notice {
+  margin-top: 10px;
+  font-size: var(--fs-sm);
+  color: #ffd66b;
+}
+.kiosk__notice--error {
+  color: #ff9e96;
+}
+
+.feed {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 3px;
+  max-height: 188px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.feed__row {
+  display: grid;
+  grid-template-columns: 3.4em minmax(0, 1.1fr) minmax(0, 0.8fr) minmax(0, 0.8fr) auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 6px 10px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.2);
+  font-variant-numeric: tabular-nums;
+  animation: row-in 380ms ease-out;
+}
+.feed__row:first-child {
+  background: rgba(69, 196, 106, 0.16);
+}
+.feed__seq {
+  font-family: var(--font-din-cond);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.feed__amount {
+  font-family: var(--font-din);
+  font-weight: 700;
+}
+.feed__kwh,
+.feed__time {
+  font-size: var(--fs-sm);
+  color: var(--on-housing-2);
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@container kiosk (max-width: 520px) {
+  .feed__row {
+    grid-template-columns: 2.8em minmax(0, 1fr) auto;
+    grid-template-areas: 'seq amount link' 'seq kwh time';
+    row-gap: 0;
+  }
+  .feed__seq {
+    grid-area: seq;
+  }
+  .feed__amount {
+    grid-area: amount;
+  }
+  .feed__kwh {
+    grid-area: kwh;
+  }
+  .feed__time {
+    grid-area: time;
+  }
+  .feed__row .txlink {
+    grid-area: link;
+  }
+}
+
+/* Simulator service panel */
+.kiosk__sim {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  padding: 12px 22px;
+  background: var(--housing-2);
+  border-top: 1px dashed var(--housing-line);
+  font-size: var(--fs-sm);
+}
+.kiosk__sim-label {
+  padding: 2px 7px;
+  border: 1px dashed var(--on-housing-2);
+  border-radius: 2px;
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-housing-2);
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green-led);
+}
+.sim-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--on-housing-2);
+}
+.sim-select {
+  min-height: 32px;
+  padding: 3px 8px;
+  border: 1px solid var(--housing-line);
+  border-radius: 3px;
+  background: var(--housing-3);
+  color: var(--on-housing);
+  font: inherit;
+}
+.kiosk__sim-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.btn--on-housing {
+  --btn-fg: var(--on-housing);
+  --btn-bd: var(--on-housing-2);
+}
+.btn--on-housing:hover {
+  --btn-bg: rgba(255, 255, 255, 0.08);
+  --btn-bd: var(--on-housing);
+}
+
+/* Compact (split-screen demo) */
+.kiosk--compact .kiosk__head {
+  padding: 12px 18px;
+}
+.kiosk--compact .kiosk__name {
+  font-size: 24px;
+}
+.kiosk--compact .kiosk__price-value {
+  font-size: 26px;
+}
+.kiosk--compact .kiosk__main {
+  gap: 18px;
+  padding: 16px 18px;
+}
+@container kiosk (min-width: 700px) {
+  .kiosk--compact .kiosk__main {
+    grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
+  }
+}
+@container kiosk (min-width: 700px) {
+  .kiosk--compact .kiosk__main {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  }
+  /* QR and text side by side keeps the display short enough for a 720p split screen. */
+  .kiosk--compact .qr-plate {
+    grid-template-columns: 172px minmax(0, 1fr);
+    grid-template-areas:
+      'qr title'
+      'qr sub'
+      'qr phantom'
+      'foot foot';
+    align-items: start;
+    justify-items: start;
+    column-gap: 14px;
+    row-gap: 4px;
+    text-align: left;
+  }
+  .kiosk--compact .qr-plate__qr {
+    grid-area: qr;
+    max-width: 172px;
+  }
+  .kiosk--compact .qr-plate__title {
+    grid-area: title;
+  }
+  .kiosk--compact .qr-plate__sub {
+    grid-area: sub;
+  }
+  .kiosk--compact .qr-plate__phantom {
+    grid-area: phantom;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 8px;
+    margin-top: 2px;
+    padding-top: 8px;
+  }
+  .kiosk--compact .qr-plate__qr-small {
+    width: 78px;
+    height: 78px;
+  }
+  .kiosk--compact .qr-plate__foot {
+    grid-area: foot;
+  }
+}
+.kiosk--compact .qr-plate {
+  padding: 12px;
+}
+.kiosk--compact .qr-plate__title {
+  font-size: 20px;
+}
+.kiosk--compact .qr-plate__sub {
+  font-size: var(--fs-xs);
+}
+.kiosk--compact .inuse-plate {
+  padding: 14px;
+  gap: 10px;
+}
+.kiosk--compact .kiosk__meters {
+  gap: 12px;
+}
+.kiosk--compact .kiosk__feed {
+  padding: 0 18px 10px;
+}
+.kiosk--compact .kiosk__feed-head {
+  padding-top: 10px;
+}
+.kiosk--compact .feed {
+  max-height: 118px;
+}
+.kiosk--compact .feed__row {
+  padding: 4px 10px;
+}
+.kiosk--compact .kiosk__sim {
+  padding: 10px 18px;
+  gap: 8px 14px;
+}
+
+/* Full-screen display page */
+.wallbox-page {
+  min-height: calc(100vh - var(--mock-h) - var(--caption-h));
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  padding: 14px;
+  background: #22282b;
+}
+.wallbox-page__foot {
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--on-housing-2);
+}
+.wallbox-page__foot a {
+  color: #9fd0ff;
+}
+@container kiosk (min-width: 1000px) {
+  .kiosk__main {
+    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+    gap: 36px;
+    padding: 30px;
+  }
+  .qr-plate__qr {
+    max-width: 330px;
+  }
+}

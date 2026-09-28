@@ -29,7 +29,7 @@ export function parsePrice(raw: string | null | undefined): { eur: string; micro
 }
 
 export const cleanName = (raw: string | null | undefined): string =>
-  (raw ?? '').replace(/[\u0000-\u001f]/g, '').trim().slice(0, MAX_NAME);
+  (raw ?? '').replace(/\p{Cc}/gu, '').trim().slice(0, MAX_NAME);
 
 export const parseCap = (raw: string | null | undefined): string =>
   (CAP_CHOICES_EUR as readonly string[]).includes(raw ?? '') ? (raw as string) : DEFAULT_CAP_EUR;
