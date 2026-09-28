@@ -412,8 +412,8 @@ docs/            bridge.md (evcc verification), decisions.md, screens/
   period, and the commit history is the development log.
 - **Who and how.** Built by Alper ([@AlperDerG229](https://github.com/AlperDerG229)), an apprentice electrician
   (Elektroniker für Energie- und Gebäudetechnik) who installs wallboxes, with
-  [Claude Code](https://claude.com/claude-code) as the coding agent. Every commit carries a `Co-Authored-By: Claude`
-  trailer.
+  [Claude Code](https://claude.com/claude-code) as the coding agent. Commits made with Claude Code carry a
+  `Co-Authored-By: Claude` trailer.
 - **Open-source dependencies** are listed in [`package.json`](package.json): the Solana Kit and program clients,
   React, qrcode, Vite, Vitest, Playwright and Fontsource fonts. The D-DIN font is bundled under the SIL Open Font
   License.
