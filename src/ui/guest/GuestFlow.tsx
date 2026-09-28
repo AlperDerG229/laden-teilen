@@ -205,19 +205,7 @@ function GuestScreens({
               <WalletCard wallet={wallet} snap={snap} onFunds={() => setFundsOpen(true)} onSwitch={() => setWallet(null)} />
             ) : (
               <div className="guest__wallets">
-                {mode === 'devnet' ? (
-                  <StandardWallets selected={wallet} onSelect={setWallet} />
-                ) : (
-                  <button
-                    type="button"
-                    className="btn btn--ghost btn--block"
-                    disabled
-                    data-testid="guest-connect"
-                    title="Wallet apps are disabled in MOCK mode"
-                  >
-                    Connect wallet (off in MOCK mode)
-                  </button>
-                )}
+                <StandardWallets selected={wallet} onSelect={setWallet} />
                 <button type="button" className="btn btn--ghost btn--block" onClick={chooseDemo} data-testid="demo-wallet">
                   Use demo wallet ({mode === 'mock' ? 'mock' : 'devnet'})
                 </button>
@@ -259,7 +247,7 @@ function GuestScreens({
                   <span>Connect the wallet that started this session to stop it. You can also just leave: the wallbox stops when your cap is used up.</span>
                 </p>
               )}
-              {!wallet && mode === 'devnet' && <StandardWallets selected={wallet} onSelect={setWallet} />}
+              {!wallet && <StandardWallets selected={wallet} onSelect={setWallet} />}
               <button
                 type="button"
                 className="btn btn--stop btn--block"
@@ -558,10 +546,19 @@ function StandardWallets({ selected, onSelect }: { selected: GuestWallet | null;
             ))}
           </div>
         )}
-        <p className="muted">
-          Set the wallet to Solana <strong>devnet</strong> (Phantom: Settings → Developer Settings → Testnet Mode) so its preview matches. The wallet only
-          signs; this page sends the transaction to devnet.
-        </p>
+        {env.chain.kind === 'mock' ? (
+          <p className="notice notice--warn">
+            <span>
+              <strong>MOCK mode:</strong> the wallet only signs. Nothing is broadcast; the transaction is applied to this browser's MOCK ledger, so a wallet
+              preview may show it as failing.
+            </span>
+          </p>
+        ) : (
+          <p className="muted">
+            Set the wallet to Solana <strong>devnet</strong> (Phantom: Settings → Developer Settings → Testnet Mode) so its preview matches. The wallet only
+            signs; this page sends the transaction to devnet.
+          </p>
+        )}
       </Modal>
     </>
   );

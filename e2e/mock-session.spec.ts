@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import { LEDGER_KEY, MOCK, OWNER, closeFunds, fundDemoWallet, horizontalOverflow, screen, seqs } from './helpers.ts';
+import { installTestWallet, type TestWalletState } from './test-wallet.ts';
 
 test('owner setup -> kiosk QR -> guest starts with the demo wallet -> 6+ payments on both sides -> stop -> receipt -> dashboard', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
@@ -166,5 +167,43 @@ test('kiosk reload mid-session resumes without pulling a step twice; kiosk Stop 
   const kioskSeqs = await seqs(kiosk.getByTestId('payment-row'));
   expect(kioskSeqs.length).toBeGreaterThanOrEqual(5);
   expect(kioskSeqs).toEqual([...Array(kioskSeqs.length).keys()].map((i) => i + 1));
+  await context.close();
+});
+
+test('wallet-standard wallet (test double): connect, sign-only start, stop & revoke, receipt', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const kiosk = await context.newPage();
+  await kiosk.goto(`./${MOCK}#/wallbox?o=${OWNER}&p=0.39&n=Wallet+test&cap=2`);
+  const guestUrl = (await kiosk.getByTestId('kiosk-qr').getAttribute('data-url'))!;
+
+  const phone = await context.newPage();
+  await phone.addInitScript(installTestWallet);
+  await phone.setViewportSize({ width: 390, height: 844 });
+  await phone.goto(guestUrl);
+  await phone.getByTestId('guest-connect').click();
+  await phone.getByRole('button', { name: 'Test Wallet' }).click();
+  await expect(phone.getByTestId('wallet-card')).toContainText('Test Wallet');
+  const wallet = () => phone.evaluate(() => (window as unknown as { __testWallet: TestWalletState }).__testWallet);
+  const address = (await wallet()).address!;
+  expect(address).toMatch(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/);
+
+  // Unfunded in the MOCK ledger: the funds panel opens for the wallet's own address.
+  await expect(phone.getByTestId('funds-address')).toHaveText(address);
+  await phone.getByTestId('mock-faucet').click();
+  await expect(phone.getByTestId('funds-token')).toHaveText('20.00');
+  await closeFunds(phone);
+
+  await phone.getByTestId('start-btn').click();
+  await expect(kiosk.getByTestId('kiosk-state')).toHaveText('CHARGING');
+  await expect.poll(() => kiosk.getByTestId('payment-row').count(), { timeout: 60_000 }).toBeGreaterThanOrEqual(3);
+  await phone.getByTestId('stop-btn').click();
+  await expect(phone.getByTestId('receipt')).toBeVisible({ timeout: 60_000 });
+  await expect(phone.getByTestId('receipt-allowance')).toContainText('Allowance revoked');
+  await expect(phone.getByTestId('receipt-refund')).toContainText('refunded');
+
+  // Exactly two approvals, both sign-only for devnet: start and stop & revoke.
+  const signs = (await wallet()).requests.filter((r) => r.method === 'signTransaction');
+  expect(signs.map((r) => r.chain)).toEqual(['solana:devnet', 'solana:devnet']);
+  await expect(kiosk.getByTestId('kiosk-last')).toContainText('Guest stopped and revoked');
   await context.close();
 });
