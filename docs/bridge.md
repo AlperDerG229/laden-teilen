@@ -263,7 +263,7 @@ Implemented from the vendor docs (`github.com/goecharger/go-eCharger-API-v2`, `h
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--charger evcc\|goe\|sim` | `evcc` | energy side (`sim` = in-process 11 kW simulator, `--sim-speed` time factor) |
+| `--charger evcc\|goe\|sim` | `evcc` | energy side (`sim` = in-process 11 kW simulator, `--sim-speed` time factor; keep one poll below one step, e.g. `--sim-speed 10 --poll-ms 500`) |
 | `--evcc-url`, `--loadpoint` | `http://127.0.0.1:7070`, `1` | or `EVCC_URL`, `EVCC_LOADPOINT`; API key only via `EVCC_API_KEY` |
 | `--chain mock\|devnet` | `mock` | in-memory chain + scripted guest, or real devnet transactions |
 | `--guest human\|scripted` | `human` | devnet: a person scans the QR, or a guest funded from `.env.treasury` |
@@ -277,7 +277,8 @@ Implemented from the vendor docs (`github.com/goecharger/go-eCharger-API-v2`, `h
 
 Scripts: `bridge`, `bridge:smoke`, `bridge:devnet` (scripted devnet guest from the dev treasury,
 loadpoint 2, cap 1 EURC, revoke after 4 payments), `test:bridge` (also part of `npm test`),
-`typecheck:bridge`.
+`typecheck:bridge`. Command-line flags win over `EVCC_LOADPOINT`, and the last flag wins, so on a
+real evcc use `npm run bridge:devnet -- --loadpoint 1` (the script itself passes `--loadpoint 2`).
 
 ## Tests
 
@@ -420,6 +421,11 @@ $ npm run bridge:smoke
 11:05:03  evcc loadpoint 2 "Garage": switched OFF (POST /api/loadpoints/2/mode/off)
 11:05:15  session ended: cap (the guest's spending cap is used up) · 3 payments · 0.117 EURC · metered 303.9 Wh · refund 0.00349156 SOL   mock:end
 ```
+
+Without Docker, the same flow runs in ~13 s against the simulator (checked 28 Sep 2026; it shows
+`simulated 11.0 kW charger (x10 speed): switched ON` instead of the evcc lines, so use the evcc
+recording for any claim about real hardware):
+`npm run bridge -- --charger sim --sim-speed 10 --poll-ms 500 --guest-cap 0.117 --guest-delay 1`
 
 Suggested caption: "Real energy manager, real meter: evcc switches the wallbox on only after the first EURC pull,
 and off when the guest's cap is used up." Once the treasury is funded, the same clip from
