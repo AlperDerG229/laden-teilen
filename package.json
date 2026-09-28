@@ -14,9 +14,14 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "lint": "eslint .",
-    "test": "vitest run",
+    "test": "vitest run && vitest run --config bridge/vitest.config.ts",
     "test:watch": "vitest",
-    "e2e:devnet": "tsx scripts/e2e-session.ts"
+    "e2e:devnet": "tsx scripts/e2e-session.ts",
+    "bridge": "tsx bridge/cli.ts",
+    "bridge:smoke": "tsx bridge/cli.ts --smoke",
+    "bridge:devnet": "tsx bridge/cli.ts --chain devnet --guest scripted --loadpoint 2 --guest-cap 1 --revoke-after 4",
+    "test:bridge": "vitest run --config bridge/vitest.config.ts",
+    "typecheck:bridge": "tsc -p bridge/tsconfig.json"
   },
   "dependencies": {
     "@fontsource-variable/atkinson-hyperlegible-mono": "5.3.0",
