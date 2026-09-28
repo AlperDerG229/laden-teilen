@@ -17,6 +17,7 @@
     "test": "vitest run && vitest run --config bridge/vitest.config.ts",
     "test:watch": "vitest",
     "e2e:devnet": "tsx scripts/e2e-session.ts",
+    "record": "tsx scripts/record-demo.ts",
     "bridge": "tsx bridge/cli.ts",
     "bridge:smoke": "tsx bridge/cli.ts --smoke",
     "bridge:devnet": "tsx bridge/cli.ts --chain devnet --guest scripted --loadpoint 2 --guest-cap 1 --revoke-after 4",
