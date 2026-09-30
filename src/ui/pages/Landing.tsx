@@ -75,6 +75,31 @@ export function Landing() {
         <HeroMeter />
       </section>
 
+      <section className="watch" aria-labelledby="watch-title">
+        <div className="watch__copy">
+          <p className="eyebrow">Watch it run</p>
+          <h2 id="watch-title">One session in 2 minutes 24 seconds.</h2>
+          <p>
+            Recorded on this live site against Solana devnet: scan, one approval, a payment before every 0.1 kWh, then stop and refund. The payments in the video
+            are real devnet transactions you can open on the explorer.
+          </p>
+          <p className="watch__links">
+            <a href={`${import.meta.env.BASE_URL}demo.mp4`}>Open the video file</a>
+            <a href="https://github.com/LyvorAlper/laden-teilen/blob/main/docs/video.md">Scenes and transactions</a>
+          </p>
+        </div>
+        <video
+          className="watch__video"
+          controls
+          preload="none"
+          playsInline
+          poster={`${import.meta.env.BASE_URL}demo-poster.jpg`}
+          src={`${import.meta.env.BASE_URL}demo.mp4`}
+          aria-label="Demo video: one charging session with Laden teilen on Solana devnet"
+          data-testid="demo-video"
+        />
+      </section>
+
       <section className="problem">
         <div>
           <p className="eyebrow">The problem</p>

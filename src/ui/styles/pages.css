@@ -142,6 +142,36 @@
     gap: 56px;
   }
 }
+/* Demo video: the poster is a real frame, the file loads only on play. */
+.watch {
+  display: grid;
+  gap: 28px;
+  align-items: center;
+  padding: 8px 0 64px;
+}
+.watch h2 {
+  font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+  line-height: 1.08;
+}
+.watch__video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--register);
+  border: 1px solid var(--housing-line);
+  border-radius: var(--radius-lg);
+  display: block;
+}
+.watch__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+@media (min-width: 940px) {
+  .watch {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 56px;
+  }
+}
 .compare {
   width: 100%;
   border-collapse: collapse;

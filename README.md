@@ -14,7 +14,7 @@ no merchant account, no backend. (*Laden teilen* is German for "share charging".
 
 - **Live app:** https://lyvoralper.github.io/laden-teilen/
 - **Split-screen demo** (wallbox display and guest phone on one page): https://lyvoralper.github.io/laden-teilen/#/demo
-- **Video (2–3 min):** `TODO(video)`
+- **Video (2:24):** https://lyvoralper.github.io/laden-teilen/demo.mp4 (recorded on the live site against Solana devnet; scenes and transaction links in [docs/video.md](docs/video.md))
 
 > **Devnet prototype with a simulated charger. No real energy is sold and the tokens have no value.**
 > Built for Superteam Germany's *Road to Colosseum: Build your MVP* and the Colosseum *Crypto World's Fair* hackathon.
