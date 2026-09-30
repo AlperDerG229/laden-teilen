@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useAppEnv } from '../app-context.tsx';
 import { href } from '../router.ts';
 
-export const REPO_URL = 'https://github.com/AlperDerG229/laden-teilen';
+export const REPO_URL = 'https://github.com/LyvorAlper/laden-teilen';
 
 export function Wordmark({ to = '/' }: { to?: string }) {
   return (

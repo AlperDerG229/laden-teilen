@@ -165,11 +165,11 @@ Loadpoint 2 after `POST mode/now` at 10:23:45 (polled every 3 s, unchanged lines
 ### CORS
 
 ```text
-$ curl -si -H 'Origin: https://alperderg229.github.io' 'http://127.0.0.1:7070/api/state?jq=.version'
+$ curl -si -H 'Origin: https://lyvoralper.github.io' 'http://127.0.0.1:7070/api/state?jq=.version'
 HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
 "0.316.1"
-$ curl -si -X OPTIONS -H 'Origin: https://alperderg229.github.io' -H 'Access-Control-Request-Method: POST' \
+$ curl -si -X OPTIONS -H 'Origin: https://lyvoralper.github.io' -H 'Access-Control-Request-Method: POST' \
     http://127.0.0.1:7070/api/loadpoints/2/mode/off
 HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
@@ -309,7 +309,7 @@ $ npm run bridge:smoke
 11:03:13    mode=off connected=true charging=false chargedEnergy=1924.835 Wh
 11:03:13  chain: MOCK (in-memory, no funds; signatures are labelled mock:) · owner 6y8FU65Y...
           [QR code drawn here]
-11:03:13  scan to charge: https://alperderg229.github.io/laden-teilen/#/charge?k=13fJwdfCSAJgkUvSvkCBqGXzQUGA5umdDUbBNSjrMmFU&o=6y8FU65YUVKbLnYtj1Qf8sp1drDh77wz7L99ikYB8SY3&p=0.39&n=Laden+teilen+wallbox&cap=5
+11:03:13  scan to charge: https://lyvoralper.github.io/laden-teilen/#/charge?k=13fJwdfCSAJgkUvSvkCBqGXzQUGA5umdDUbBNSjrMmFU&o=6y8FU65YUVKbLnYtj1Qf8sp1drDh77wz7L99ikYB8SY3&p=0.39&n=Laden+teilen+wallbox&cap=5
 11:03:13  price 0.39 EURC/kWh · step 100 Wh = 0.039 EURC · lead 100 Wh
 11:03:13  waiting for the guest's start transaction (session 13fJwdfC)
 11:03:17  mock guest scanned the QR and approved 0.117 EURC (start tx)

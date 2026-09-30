@@ -15,7 +15,7 @@ export interface GuestLinkParams {
   cap: string;
 }
 
-/** https://alperderg229.github.io/laden-teilen/#/charge?k=<session>&o=<owner>&p=<price>&n=<name>&cap=<cap> */
+/** https://lyvoralper.github.io/laden-teilen/#/charge?k=<session>&o=<owner>&p=<price>&n=<name>&cap=<cap> */
 export function guestUrl(p: GuestLinkParams, appUrl: string = APP_URL): string {
   const query = new URLSearchParams({ k: p.session, o: p.owner, p: p.price, n: p.name, cap: p.cap });
   return `${appUrl}#/charge?${query.toString()}`;

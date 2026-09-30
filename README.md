@@ -9,11 +9,11 @@ no merchant account, no backend. (*Laden teilen* is German for "share charging".
 [![Solana devnet](https://img.shields.io/badge/Solana-devnet-9945FF?logo=solana&logoColor=white)](https://explorer.solana.com/?cluster=devnet)
 [![EURC devnet](https://img.shields.io/badge/token-EURC%20devnet-2775CA)](https://explorer.solana.com/address/HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr?cluster=devnet)
 [![No custom program](https://img.shields.io/badge/custom%20program-none-555)](#why-no-custom-program)
-[![Deploy to GitHub Pages](https://github.com/AlperDerG229/laden-teilen/actions/workflows/pages.yml/badge.svg)](https://github.com/AlperDerG229/laden-teilen/actions/workflows/pages.yml)
+[![Deploy to GitHub Pages](https://github.com/LyvorAlper/laden-teilen/actions/workflows/pages.yml/badge.svg)](https://github.com/LyvorAlper/laden-teilen/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-- **Live app:** https://alperderg229.github.io/laden-teilen/
-- **Split-screen demo** (wallbox display and guest phone on one page): https://alperderg229.github.io/laden-teilen/#/demo
+- **Live app:** https://lyvoralper.github.io/laden-teilen/
+- **Split-screen demo** (wallbox display and guest phone on one page): https://lyvoralper.github.io/laden-teilen/#/demo
 - **Video (2–3 min):** `TODO(video)`
 
 > **Devnet prototype with a simulated charger. No real energy is sold and the tokens have no value.**
@@ -175,8 +175,8 @@ The chain is the message bus and the database.
 | Token | Circle EURC, devnet mint [`HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr`](https://explorer.solana.com/address/HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr?cluster=devnet) (SPL Token, 6 decimals; [Circle's address list](https://developers.circle.com/stablecoins/eurc-contract-addresses)) |
 | Programs | System `11111111111111111111111111111111` · SPL Token `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` · Associated Token `ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL` · Memo v2 `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr` |
 | Custom programs | none deployed |
-| Demo payout address | [`gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD`](https://explorer.solana.com/address/gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD?cluster=devnet), the public key of the devnet dev treasury and the default owner of `/#/demo` ([its dashboard](https://alperderg229.github.io/laden-teilen/#/owner/dashboard?o=gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD)) |
-| Frontend | https://alperderg229.github.io/laden-teilen/ (GitHub Pages, built by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) from `main`) |
+| Demo payout address | [`gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD`](https://explorer.solana.com/address/gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD?cluster=devnet), the public key of the devnet dev treasury and the default owner of `/#/demo` ([its dashboard](https://lyvoralper.github.io/laden-teilen/#/owner/dashboard?o=gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD)) |
+| Frontend | https://lyvoralper.github.io/laden-teilen/ (GitHub Pages, built by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) from `main`) |
 
 ### Example transactions
 
@@ -202,7 +202,7 @@ delegate = session key and allowance = cap; the stop tx leaves no delegate; Memo
 
 You need about 0.01 devnet SOL and 1 devnet EURC. Both faucets are free; getting the tokens is most of the 3 minutes.
 
-1. Open the **split-screen demo**: https://alperderg229.github.io/laden-teilen/#/demo. The wallbox display (left)
+1. Open the **split-screen demo**: https://lyvoralper.github.io/laden-teilen/#/demo. The wallbox display (left)
    shows a QR code for a fresh session key; the phone (right) "scans" it.
 2. On the phone, tap **Use demo wallet (devnet)**. This is an in-page keypair, clearly labelled; Phantom and Solflare
    work the same way. The **Get test funds** panel opens with the wallet address and live balances.
@@ -265,7 +265,7 @@ $ npm run bridge:smoke
 Node `^20.19.0` or `>=22.12.0`.
 
 ```bash
-git clone https://github.com/AlperDerG229/laden-teilen.git
+git clone https://github.com/LyvorAlper/laden-teilen.git
 cd laden-teilen
 npm ci
 npm run dev        # http://localhost:5173/laden-teilen/ on devnet; add ?mock=1 for the in-browser MOCK ledger
@@ -410,7 +410,7 @@ docs/            bridge.md (evcc verification), decisions.md, screens/
 - **Built during the contest.** The repository was created on 28 Sep 2026 (first commit 09:51 UTC), during the
   Colosseum contest period that started on 14 Sep 2026. There is no prior code: everything here was written in this
   period, and the commit history is the development log.
-- **Who and how.** Built by Alper ([@AlperDerG229](https://github.com/AlperDerG229)), an apprentice electrician
+- **Who and how.** Built by Alper ([@LyvorAlper](https://github.com/LyvorAlper)), an apprentice electrician
   (Elektroniker für Energie- und Gebäudetechnik) who installs wallboxes, with
   [Claude Code](https://claude.com/claude-code) as the coding agent. Commits made with Claude Code carry a
   `Co-Authored-By: Claude` trailer.
@@ -421,6 +421,6 @@ docs/            bridge.md (evcc verification), decisions.md, screens/
 
 ## License
 
-[MIT](LICENSE) © 2026 AlperDerG229. Fonts keep their own licenses: D-DIN © 2017 Datto Inc., SIL OFL 1.1
+[MIT](LICENSE) © 2026 LyvorAlper. Fonts keep their own licenses: D-DIN © 2017 Datto Inc., SIL OFL 1.1
 ([src/ui/assets/fonts/d-din/OFL-1.1.txt](src/ui/assets/fonts/d-din/OFL-1.1.txt)); Source Sans 3 and Atkinson
 Hyperlegible Mono via Fontsource, SIL OFL 1.1.

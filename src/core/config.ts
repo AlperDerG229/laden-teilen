@@ -56,7 +56,7 @@ export const CAP_CHOICES_EUR = ['2', '5', '10'] as const;
 export const RPC_MAX_REQUESTS_PER_SECOND = 5;
 export const POLL_INTERVAL_MS = 2_000;
 
-export const APP_URL = 'https://alperderg229.github.io/laden-teilen/';
+export const APP_URL = 'https://lyvoralper.github.io/laden-teilen/';
 
 export const explorerTx = (sig: string): string => `https://explorer.solana.com/tx/${sig}?cluster=${CLUSTER}`;
 export const explorerAddress = (addr: string): string =>

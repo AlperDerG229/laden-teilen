@@ -52,7 +52,7 @@ import {
 } from './demo-video/funds.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const REPO_URL = 'https://github.com/AlperDerG229/laden-teilen';
+const REPO_URL = 'https://github.com/LyvorAlper/laden-teilen';
 /** The final take's demo guest, saved before it is funded (gitignored via .env*). */
 const GUEST_FILE = resolve(ROOT, '.env.demo-video-guest.json');
 const VIEWPORT = { width: WIDTH, height: HEIGHT };
@@ -380,7 +380,7 @@ function watchConsole(page: Page, name: string, logFile: string): void {
 
 interface TakeEnv {
   mode: Options['mode'];
-  /** App base URL, e.g. https://alperderg229.github.io/laden-teilen/ */
+  /** App base URL, e.g. https://lyvoralper.github.io/laden-teilen/ */
   base: string;
   /** Global flags for the first load (they stay in the query string for hash navigation). */
   query: string;

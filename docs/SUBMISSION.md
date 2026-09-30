@@ -40,14 +40,14 @@ No custom program. Everything uses existing Solana programs:
 - **Real hardware path.** An open-source bridge runs the same charger loop against evcc's REST API (the popular German open-source energy manager) instead of the browser simulator. Verified live against evcc 0.316.1; a run on a physical wallbox is next.
 
 **Q5. Link to access and test the MVP**
-https://alperderg229.github.io/laden-teilen/#/demo
+https://lyvoralper.github.io/laden-teilen/#/demo
 How to test in about 3 minutes: open `/#/demo` → "Demo wallet (devnet)" → "Get test funds" (faucet links for devnet SOL and EURC) → Start. Phantom works in testnet mode (README).
 
 **Q6. 2–3 minute demo video**
-‹https://alperderg229.github.io/laden-teilen/demo.mp4› (optional: unlisted YouTube)
+‹https://lyvoralper.github.io/laden-teilen/demo.mp4› (optional: unlisted YouTube)
 
 **Q7. Public GitHub repository**
-https://github.com/AlperDerG229/laden-teilen
+https://github.com/LyvorAlper/laden-teilen
 
 **Q8. Devnet or Mainnet? Program IDs, tx links, addresses**
 Devnet.

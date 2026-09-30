@@ -1,5 +1,5 @@
 # Builds the static Vite app and deploys it to GitHub Pages:
-# https://alperderg229.github.io/laden-teilen/ (vite.config.ts sets base '/laden-teilen/').
+# https://lyvoralper.github.io/laden-teilen/ (vite.config.ts sets base '/laden-teilen/').
 # The production build runs on Solana devnet; MOCK mode only exists behind ?mock=1.
 name: Deploy to GitHub Pages
 

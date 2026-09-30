@@ -55,7 +55,7 @@ export const wallboxQuery = (w: Pick<WallboxParams, 'owner' | 'priceEur' | 'name
   cap: w.capEur,
 });
 
-/** Base URL of this deployment, e.g. https://alperderg229.github.io/laden-teilen/ */
+/** Base URL of this deployment, e.g. https://lyvoralper.github.io/laden-teilen/ */
 export function appBaseUrl(origin: string, baseUrl: string): string {
   return `${origin}${baseUrl.startsWith('/') ? baseUrl : `/${baseUrl}`}`;
 }
