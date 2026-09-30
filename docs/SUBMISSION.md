@@ -1,7 +1,7 @@
 # Submission draft: Superteam Germany "Road to Colosseum: Build your MVP"
 
-> DRAFT. Placeholders `‹…›` are filled in once the final demo video (`npm run record -- --final`) and the funded
-> devnet run exist. The live app and the repository below are already public.
+> DRAFT. The funded devnet run (30.09.2026) and the final demo video are in. The only placeholders left are the
+> Colosseum project link (Q9) and the handle (Q10), which Alper fills in himself. The live app and the repository are public.
 > **HUMAN_ONLY:** Alper submits the form himself at https://earn.superteam.fun/listing/road-to-colosseum-hackathon-build-your-mvp
 > Deadline: **Mon 05.10.2026, 23:59 CEST (21:59 UTC)**. Target submission: Sun 04.10.
 > Prerequisite: Colosseum registration (country: Germany) + project page. The form's Q9 needs its link.
@@ -44,7 +44,7 @@ https://lyvoralper.github.io/laden-teilen/#/demo
 How to test in about 3 minutes: open `/#/demo` → "Demo wallet (devnet)" → "Get test funds" (faucet links for devnet SOL and EURC) → Start. Phantom works in testnet mode (README).
 
 **Q6. 2–3 minute demo video**
-‹https://lyvoralper.github.io/laden-teilen/demo.mp4› (optional: unlisted YouTube)
+https://lyvoralper.github.io/laden-teilen/demo.mp4 (2:24, recorded on the live site against real devnet; optional: upload as unlisted YouTube)
 
 **Q7. Public GitHub repository**
 https://github.com/LyvorAlper/laden-teilen
@@ -53,11 +53,11 @@ https://github.com/LyvorAlper/laden-teilen
 Devnet.
 - EURC (devnet) mint `HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr`.
 - Example session:
-  - start ‹tx›
-  - pay #1 ‹tx›, pay #2 ‹tx›
-  - stop / revoke ‹tx›
-  - end + refund ‹tx›
-- Owner payout account ‹address› (explorer link).
+  - start https://explorer.solana.com/tx/3k6jYi67G4WC36mucunActqyWgxUTwRA1z4M8uupJ1AG8vFr3YqkjfPsAAGy8DpLxfZ8KvVAndx2ogbf1vW8YbaS?cluster=devnet
+  - pay #1 https://explorer.solana.com/tx/4yRY2L51zMNxRqv7LRux5D4zpFGzXM3bWZKWViyWaf6mJyMxXDxN9d62rw9sYZQEqAdWsPEMc7eTVcFpmofvioae?cluster=devnet, pay #2 https://explorer.solana.com/tx/3AcNikLGwtjF2GKoREfZpab4vaFdFRDdYnvDDMAqe2zzAVHHfR665qbrMFpg3eP3QcgXb76N6VjdyhfT7KnbZwxv?cluster=devnet
+  - stop / revoke https://explorer.solana.com/tx/2byM8q5ReRxF3mLopTACxfTFW7WMpwJ3aGSmZUH69sDUJF9iwubP5AXiBMmQ5ZAxyAbJBcqDdxEaye7uWcgGzZ1K?cluster=devnet
+  - end + refund https://explorer.solana.com/tx/22hBHNNZARv8mAXCjuSkHCoX4nXaTwzJ84EzoJ8tn6Vh42uoDwZTDbYgjY2V9QiwNUSk3fUAyLS8eHDacaz6mG2e?cluster=devnet
+- Owner payout account https://explorer.solana.com/address/BcFEgX29Rn7gPvGb9cKmPjLQkC4G59QrEkhdFvzWyZHG?cluster=devnet (5 payments x 0.039 EURC = 0.195 EURC).
 - Programs: see Q4.
 
 **Q9. Colosseum project link**

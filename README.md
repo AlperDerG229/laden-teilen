@@ -180,18 +180,18 @@ The chain is the message bus and the database.
 
 ### Example transactions
 
-> **`TODO(devnet-run)`**: these links are added after the funded devnet run (`npm run e2e:devnet` and
-> `npm run bridge:devnet`). No signature is listed here until it exists on devnet.
+> Session from the funded devnet run of `npm run e2e:devnet` (30.09.2026, 11 confirmed transactions, all assertions
+> pass; full report in [docs/e2e-devnet.md](docs/e2e-devnet.md)). Every link below is a real devnet signature.
 
 | Step | Transaction |
 |---|---|
-| start (guest: SOL deposit + `ApproveChecked` + memo) | `TODO(devnet-run)` |
-| pay #1 (session key: owner's EURC account + `TransferChecked` + memo) | `TODO(devnet-run)` |
-| pay #2 | `TODO(devnet-run)` |
-| stop (guest: `Revoke` + memo) | `TODO(devnet-run)` |
-| end (session key: memo + SOL refund) | `TODO(devnet-run)` |
-| owner payout account of that session | `TODO(devnet-run)` |
-| evcc bridge session (pulls driven by evcc's metered energy) | `TODO(devnet-run)` |
+| start (guest: SOL deposit + `ApproveChecked` + memo) | [`3k6jYi67…W8YbaS`](https://explorer.solana.com/tx/3k6jYi67G4WC36mucunActqyWgxUTwRA1z4M8uupJ1AG8vFr3YqkjfPsAAGy8DpLxfZ8KvVAndx2ogbf1vW8YbaS?cluster=devnet) |
+| pay #1 (session key: owner's EURC account + `TransferChecked` + memo) | [`4yRY2L51…fvioae`](https://explorer.solana.com/tx/4yRY2L51zMNxRqv7LRux5D4zpFGzXM3bWZKWViyWaf6mJyMxXDxN9d62rw9sYZQEqAdWsPEMc7eTVcFpmofvioae?cluster=devnet) |
+| pay #2 | [`3AcNikLG…nbZwxv`](https://explorer.solana.com/tx/3AcNikLGwtjF2GKoREfZpab4vaFdFRDdYnvDDMAqe2zzAVHHfR665qbrMFpg3eP3QcgXb76N6VjdyhfT7KnbZwxv?cluster=devnet) |
+| stop (guest: `Revoke` + memo) | [`2byM8q5R…gGzZ1K`](https://explorer.solana.com/tx/2byM8q5ReRxF3mLopTACxfTFW7WMpwJ3aGSmZUH69sDUJF9iwubP5AXiBMmQ5ZAxyAbJBcqDdxEaye7uWcgGzZ1K?cluster=devnet) |
+| end (session key: memo + SOL refund) | [`22hBHNNZ…z6mG2e`](https://explorer.solana.com/tx/22hBHNNZARv8mAXCjuSkHCoX4nXaTwzJ84EzoJ8tn6Vh42uoDwZTDbYgjY2V9QiwNUSk3fUAyLS8eHDacaz6mG2e?cluster=devnet) |
+| owner payout account of that session | [`BcFEgX29…vzWyZHG`](https://explorer.solana.com/address/BcFEgX29Rn7gPvGb9cKmPjLQkC4G59QrEkhdFvzWyZHG?cluster=devnet) (5 payments × 0.039 EURC = 0.195 EURC) |
+| evcc bridge session (pulls driven by evcc's metered energy) | start [`5Z2M8is4…dXCuEu`](https://explorer.solana.com/tx/5Z2M8is4RNvwGJnQnB3p5xHaCEA9xuYMq6Y8EKuPt3mYQbC1t4SGzjtSFDaUFjSovVCgw5nPA1PpRumUDKdXCuEu?cluster=devnet) · end [`KQBzwfvG…eo6iw8`](https://explorer.solana.com/tx/KQBzwfvGicq7Hzc9aSJFCbsuFuVm7hmiS3KjU8ghRxJWTe5qLWrPaLhhJykjLP2yABsutrm67iZX7k1qaeo6iw8?cluster=devnet) (4 payments = 0.156 EURC, 419.5 Wh metered by evcc 0.316.1 demo, all 7 checks pass; log in [docs/bridge.md](docs/bridge.md)) |
 
 What already ran against devnet without funds (`npm run e2e:devnet -- --smoke`, see
 [docs/decisions.md](docs/decisions.md)): all four transaction types build, sign and pass devnet

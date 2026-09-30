@@ -434,21 +434,92 @@ and off when the guest's cap is used up." Once the treasury is funded, the same 
 ## Real devnet session
 
 <!-- devnet-run:start -->
-Not run yet: the dev treasury `gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD` held 0 SOL and no EURC
-token account at the last check (2026-09-28 11:05 UTC); `npm run bridge:devnet` stops with
-`BLOCKED-ON-FUNDS` and exit code 2 before creating any key. What already works without funds: the
-human-guest mode polls `findStartTx` on devnet through `src/core`, prints the QR and the Phantom
-deeplink, keeps the session key in `.env.bridge-session.json` (0600) and removes it after a stop
-with nothing deposited. Once the treasury holds ≥ 0.05 SOL and ≥ 1 EURC:
+Recorded 2026-09-30T20:06:56.182Z with `npm run bridge:devnet` (energy from evcc, chain: devnet).
 
-```bash
-docker run --rm -d --name evcc-demo -p 7070:7070 evcc/evcc --demo
-npm run bridge:devnet     # replaces this section with the log and explorer links
-docker stop evcc-demo
+| Step | Transaction |
+|---|---|
+| fund guest (treasury) | [7RTZtHzV1APBHe6T...](https://explorer.solana.com/tx/7RTZtHzV1APBHe6TyvstjV32cXoPhfkHUz166Yj8CZ6tk1TFEau58UtvG3c4hUdNCZHHmcFYDgNW1Qo9cAic4n5?cluster=devnet) |
+| start (guest) | [5Z2M8is4RNvwGJnQ...](https://explorer.solana.com/tx/5Z2M8is4RNvwGJnQnB3p5xHaCEA9xuYMq6Y8EKuPt3mYQbC1t4SGzjtSFDaUFjSovVCgw5nPA1PpRumUDKdXCuEu?cluster=devnet) |
+| pay #1 | [2mK3N8aqRGXeuzj1...](https://explorer.solana.com/tx/2mK3N8aqRGXeuzj1NS7SwdNAZLxWcGKRsnyMMyGciBkLGa6HNBcAE7rdYvr8DyZTQj31DPxrQYqcKdsXFo2W6gXD?cluster=devnet) |
+| pay #2 | [2YWaPDwjNSgU3sc6...](https://explorer.solana.com/tx/2YWaPDwjNSgU3sc6ZRaLvP4TKksBudxaKq8nGMAvxNuLkN3GNU3oBPXYWeDATZfMow2A6ga2HJcLkPwYzaC5G5ri?cluster=devnet) |
+| pay #3 | [3TtVtwJ9aDWprLL9...](https://explorer.solana.com/tx/3TtVtwJ9aDWprLL9TWJFN6Q6VqdL9kp3MGSPERHWweLPtt2tt12m84yfZwYJL66c7cL8QA9rF8wUoT36fgMyAkuA?cluster=devnet) |
+| pay #4 | [3TqgvcD358kT1KK8...](https://explorer.solana.com/tx/3TqgvcD358kT1KK8zCB1EYn87H9t4CSv5idUTjUh2aNqHUk4id5PuEiuLCm4VACGZMVCBKtVQXAuYEiLa1tpS5nE?cluster=devnet) |
+| stop (guest revoke) | [45LQDFadEjircfyW...](https://explorer.solana.com/tx/45LQDFadEjircfyWAgLYseDcaKsSgWWQfQy925qgkkYo1PyHns4hyV7QPg6B7TZUwfHP8yBKbvSvTyvdhv1fhGJu?cluster=devnet) |
+| end (revoked, refund) | [KQBzwfvGicq7Hzc9...](https://explorer.solana.com/tx/KQBzwfvGicq7Hzc9aSJFCbsuFuVm7hmiS3KjU8ghRxJWTe5qLWrPaLhhJykjLP2yABsutrm67iZX7k1qaeo6iw8?cluster=devnet) |
+| reclaim owner | [5PUb8eP2tcLJegAG...](https://explorer.solana.com/tx/5PUb8eP2tcLJegAGABGkQuS11uYoirD5eUT5D4ZZwRCP8AXoMwKaCsoqJwdXJHweCkEYJUJb3wWVoYK8kFHcGKzD?cluster=devnet) |
+| reclaim guest | [2THnu8LQBKBGDmT8...](https://explorer.solana.com/tx/2THnu8LQBKBGDmT8htmXJYXbTRS1y1PTsBpfdvTRCj6s8aDmvE2RYTyUX2q65p3KNtAZN2iTsRbP6chn72B3VD2Y?cluster=devnet) |
+
+```text
+20:04:07  Laden teilen · wallbox bridge · chain devnet (scripted guest) · charger evcc
+20:04:07  evcc 0.316.1 (demo mode) at http://127.0.0.1:7070 · evcc loadpoint 2 "Garage" · vehicle "white Model 3" · plugged in
+20:04:07    mode=off connected=true charging=false chargedEnergy=0 Wh
+20:04:07  treasury gnjANn6HJYbphXyT8fUkG4AUUNueykpzJ3VuWf1EMRD: 0.49994 SOL, 20 EURC
+20:04:07  ephemeral keys saved to /home/alper_k/money-lab/2026-09-28/mvp/laden-teilen/.env.bridge-keys.json: guest 9X7qhZtvVJzfrwWwuKsJAxGnVKJHBFLnGhoARiE9oviP, owner 3JZi3ZPyJwJ8EdmKcTp4hjGQ1esJxXj14WfhQc1TwQH7, session F6nMbJdH8HHE4KamuSRGo2DUVUA3VzcM82dgFbQiVanu
+20:04:09  funded the scripted guest with 0.02 SOL + 1 EURC   https://explorer.solana.com/tx/7RTZtHzV1APBHe6TyvstjV32cXoPhfkHUz166Yj8CZ6tk1TFEau58UtvG3c4hUdNCZHHmcFYDgNW1Qo9cAic4n5?cluster=devnet
+20:04:09  scan to charge: https://lyvoralper.github.io/laden-teilen/#/charge?k=F6nMbJdH8HHE4KamuSRGo2DUVUA3VzcM82dgFbQiVanu&o=3JZi3ZPyJwJ8EdmKcTp4hjGQ1esJxXj14WfhQc1TwQH7&p=0.39&n=Laden+teilen+wallbox&cap=5
+20:04:09  in Phantom:     https://phantom.app/ul/browse/https%3A%2F%2Flyvoralper.github.io%2Fladen-teilen%2F%23%2Fcharge%3Fk%3DF6nMbJdH8HHE4KamuSRGo2DUVUA3VzcM82dgFbQiVanu%26o%3D3JZi3ZPyJwJ8EdmKcTp4hjGQ1esJxXj14WfhQc1TwQH7%26p%3D0.39%26n%3DLaden%2Bteilen%2Bwallbox%26cap%3D5?ref=https%3A%2F%2Flyvoralper.github.io
+20:04:09  price 0.39 EURC/kWh · step 100 Wh = 0.039 EURC · lead 100 Wh
+20:04:09  waiting for the guest's start transaction (session F6nMbJdH)
+20:04:13  scripted guest signed the start tx (cap 1 EURC)   https://explorer.solana.com/tx/5Z2M8is4RNvwGJnQnB3p5xHaCEA9xuYMq6Y8EKuPt3mYQbC1t4SGzjtSFDaUFjSovVCgw5nPA1PpRumUDKdXCuEu?cluster=devnet
+20:04:14  guest 9X7qhZtv... approved 1 EURC, deposit 0.005 SOL   https://explorer.solana.com/tx/5Z2M8is4RNvwGJnQnB3p5xHaCEA9xuYMq6Y8EKuPt3mYQbC1t4SGzjtSFDaUFjSovVCgw5nPA1PpRumUDKdXCuEu?cluster=devnet
+20:04:16  pay #1   0.039 EURC   paid 100 Wh   https://explorer.solana.com/tx/2mK3N8aqRGXeuzj1NS7SwdNAZLxWcGKRsnyMMyGciBkLGa6HNBcAE7rdYvr8DyZTQj31DPxrQYqcKdsXFo2W6gXD?cluster=devnet
+20:04:16  evcc loadpoint 2 "Garage": switched ON (POST /api/loadpoints/2/mode/now)
+20:04:16  meter 0.0 Wh >= paid 100 Wh - lead 100 Wh -> pull the next step
+20:04:18  pay #2   0.039 EURC   paid 200 Wh   https://explorer.solana.com/tx/2YWaPDwjNSgU3sc6ZRaLvP4TKksBudxaKq8nGMAvxNuLkN3GNU3oBPXYWeDATZfMow2A6ga2HJcLkPwYzaC5G5ri?cluster=devnet
+20:04:32  meter   27.6 Wh   11.0 kW   paid 200 Wh
+20:04:42  meter   55.2 Wh   11.0 kW   paid 200 Wh
+20:04:50  meter   82.8 Wh   11.0 kW   paid 200 Wh
+20:05:00  meter  110.4 Wh   11.0 kW   paid 200 Wh
+20:05:00  meter 110.4 Wh >= paid 200 Wh - lead 100 Wh -> pull the next step
+20:05:02  pay #3   0.039 EURC   paid 300 Wh   https://explorer.solana.com/tx/3TtVtwJ9aDWprLL9TWJFN6Q6VqdL9kp3MGSPERHWweLPtt2tt12m84yfZwYJL66c7cL8QA9rF8wUoT36fgMyAkuA?cluster=devnet
+20:05:08  meter  138.0 Wh   11.0 kW   paid 300 Wh
+20:05:18  meter  165.6 Wh   11.0 kW   paid 300 Wh
+20:05:26  meter  193.2 Wh   11.0 kW   paid 300 Wh
+20:05:36  meter  220.8 Wh   11.0 kW   paid 300 Wh
+20:05:36  meter 220.8 Wh >= paid 300 Wh - lead 100 Wh -> pull the next step
+20:05:36  pay #4   0.039 EURC   paid 400 Wh   https://explorer.solana.com/tx/3TqgvcD358kT1KK8zCB1EYn87H9t4CSv5idUTjUh2aNqHUk4id5PuEiuLCm4VACGZMVCBKtVQXAuYEiLa1tpS5nE?cluster=devnet
+20:05:38  scripted guest pressed "Stop & revoke"   https://explorer.solana.com/tx/45LQDFadEjircfyWAgLYseDcaKsSgWWQfQy925qgkkYo1PyHns4hyV7QPg6B7TZUwfHP8yBKbvSvTyvdhv1fhGJu?cluster=devnet
+20:05:45  meter  248.4 Wh   11.0 kW   paid 400 Wh
+20:05:53  meter  276.0 Wh   11.0 kW   paid 400 Wh
+20:06:03  meter  303.6 Wh   11.0 kW   paid 400 Wh
+20:06:03  meter 303.6 Wh >= paid 400 Wh - lead 100 Wh -> pull the next step
+20:06:03  ending: revoked (the guest revoked the allowance)
+20:06:03  delivering the energy already paid for: metered 303.6 of 400 Wh
+20:06:11  meter  331.2 Wh   11.0 kW   paid 400 Wh
+20:06:21  meter  358.8 Wh   11.0 kW   paid 400 Wh
+20:06:29  meter  386.4 Wh   11.0 kW   paid 400 Wh
+20:06:39  meter  414.0 Wh   11.0 kW   paid 400 Wh
+20:06:39  evcc loadpoint 2 "Garage": switched OFF (POST /api/loadpoints/2/mode/off)
+20:06:41  meter  419.5 Wh   0.0 kW   paid 400 Wh
+20:06:49  final meter reading: 419.5 Wh delivered, 400 Wh paid
+20:06:51  session ended: revoked (the guest revoked the allowance) · 4 payments · 0.156 EURC · metered 419.5 Wh · refund 0.00348656 SOL   https://explorer.solana.com/tx/KQBzwfvGicq7Hzc9aSJFCbsuFuVm7hmiS3KjU8ghRxJWTe5qLWrPaLhhJykjLP2yABsutrm67iZX7k1qaeo6iw8?cluster=devnet
+
+20:06:51  Checks (via RPC)
+20:06:51    PASS  charger switched on after pay #1 and off at the end: on=true off=true
+20:06:51    PASS  session ended and refunded: reason=revoked
+20:06:51    PASS  pull before deliver: metered <= paid while charging: max(metered - paid) = -79.2 Wh
+20:06:51    PASS  session key balance == 0: 0 lamports
+20:06:51    PASS  guest token account delegate == null: delegate=null
+20:06:51    PASS  owner received 4 x 0.039 EURC: 0.156 EURC
+20:06:52    PASS  end memo on the guest wallet carries the metered Wh: LT1|end|F6nMbJdH|419|156000|revoked
+
+20:06:53  reclaim owner   https://explorer.solana.com/tx/5PUb8eP2tcLJegAGABGkQuS11uYoirD5eUT5D4ZZwRCP8AXoMwKaCsoqJwdXJHweCkEYJUJb3wWVoYK8kFHcGKzD?cluster=devnet
+20:06:56  reclaim guest   https://explorer.solana.com/tx/2THnu8LQBKBGDmT8htmXJYXbTRS1y1PTsBpfdvTRCj6s8aDmvE2RYTyUX2q65p3KNtAZN2iTsRbP6chn72B3VD2Y?cluster=devnet
+
+20:06:56  Explorer links
+20:06:56    fund guest (treasury)    https://explorer.solana.com/tx/7RTZtHzV1APBHe6TyvstjV32cXoPhfkHUz166Yj8CZ6tk1TFEau58UtvG3c4hUdNCZHHmcFYDgNW1Qo9cAic4n5?cluster=devnet
+20:06:56    start (guest)            https://explorer.solana.com/tx/5Z2M8is4RNvwGJnQnB3p5xHaCEA9xuYMq6Y8EKuPt3mYQbC1t4SGzjtSFDaUFjSovVCgw5nPA1PpRumUDKdXCuEu?cluster=devnet
+20:06:56    pay #1                   https://explorer.solana.com/tx/2mK3N8aqRGXeuzj1NS7SwdNAZLxWcGKRsnyMMyGciBkLGa6HNBcAE7rdYvr8DyZTQj31DPxrQYqcKdsXFo2W6gXD?cluster=devnet
+20:06:56    pay #2                   https://explorer.solana.com/tx/2YWaPDwjNSgU3sc6ZRaLvP4TKksBudxaKq8nGMAvxNuLkN3GNU3oBPXYWeDATZfMow2A6ga2HJcLkPwYzaC5G5ri?cluster=devnet
+20:06:56    pay #3                   https://explorer.solana.com/tx/3TtVtwJ9aDWprLL9TWJFN6Q6VqdL9kp3MGSPERHWweLPtt2tt12m84yfZwYJL66c7cL8QA9rF8wUoT36fgMyAkuA?cluster=devnet
+20:06:56    pay #4                   https://explorer.solana.com/tx/3TqgvcD358kT1KK8zCB1EYn87H9t4CSv5idUTjUh2aNqHUk4id5PuEiuLCm4VACGZMVCBKtVQXAuYEiLa1tpS5nE?cluster=devnet
+20:06:56    stop (guest revoke)      https://explorer.solana.com/tx/45LQDFadEjircfyWAgLYseDcaKsSgWWQfQy925qgkkYo1PyHns4hyV7QPg6B7TZUwfHP8yBKbvSvTyvdhv1fhGJu?cluster=devnet
+20:06:56    end (revoked, refund)    https://explorer.solana.com/tx/KQBzwfvGicq7Hzc9aSJFCbsuFuVm7hmiS3KjU8ghRxJWTe5qLWrPaLhhJykjLP2yABsutrm67iZX7k1qaeo6iw8?cluster=devnet
+20:06:56    reclaim owner            https://explorer.solana.com/tx/5PUb8eP2tcLJegAGABGkQuS11uYoirD5eUT5D4ZZwRCP8AXoMwKaCsoqJwdXJHweCkEYJUJb3wWVoYK8kFHcGKzD?cluster=devnet
+20:06:56    reclaim guest            https://explorer.solana.com/tx/2THnu8LQBKBGDmT8htmXJYXbTRS1y1PTsBpfdvTRCj6s8aDmvE2RYTyUX2q65p3KNtAZN2iTsRbP6chn72B3VD2Y?cluster=devnet
+20:06:56    owner token account      https://explorer.solana.com/address/91dtXDTHmqhFess7tikWKKypdgaDEXkEDQCcUXvcE5sc?cluster=devnet
+20:06:56  RESULT: PASS (10 confirmed transactions)
 ```
-
-The scripted guest is funded from the treasury (0.02 SOL + 1 EURC), approves 1 EURC, and presses
-"Stop & revoke" after 4 payments; leftovers of all ephemeral keys go back to the treasury.
 <!-- devnet-run:end -->
 
 ## Limitations
